@@ -924,10 +924,12 @@ main { overflow-y: auto; }
     </div>
     <div class="header-right">
       <div class="header-tags">
+        <!-- GENSTART:header-tags -->
         <span class="tag tag-red" id="tagActionables">9 actionables</span>
         <span class="tag tag-amber">2 meetings</span>
         <span class="tag tag-purple">5 Jira tasks</span>
         <span class="tag tag-teal">7 AI links</span>
+        <!-- GENEND:header-tags -->
       </div>
       <div class="refresh-row">
         <button class="refresh-btn" onclick="refreshDashboard()">↻ &nbsp;Refresh</button>
@@ -938,6 +940,7 @@ main { overflow-y: auto; }
 
   <!-- Metrics -->
   <div class="metrics">
+    <!-- GENSTART:metrics -->
     <div class="metric">
       <div class="metric-val" style="color:var(--danger)">3</div>
       <div class="metric-label">High priority</div>
@@ -958,19 +961,22 @@ main { overflow-y: auto; }
       <div class="metric-val" style="color:#c8a87b">201</div>
       <div class="metric-label">Unread emails</div>
     </div>
+    <!-- GENEND:metrics -->
   </div>
 
   <!-- ACTIONABLES -->
   <div class="section" id="actionables">
     <div class="section-header">
       <div class="section-title">All actionables</div>
-      <span class="section-count">9 items — Email · Slack · Jira</span>
+      <span class="section-count"><!-- GENSTART:action-count -->9 items — Email · Slack · Jira<!-- GENEND:action-count --></span>
     </div>
 
+    <!-- GENSTART:focus -->
     <div class="highlight">
       <div class="highlight-label">Today's focus</div>
       <div class="highlight-text">You have 3 high-priority items: Performance self-review, Shubhi peer review, and the Modal redesign call with Rohit. Start with the reviews — they are HR deadlines. A Figma comment from Adarsh is also waiting.</div>
     </div>
+    <!-- GENEND:focus -->
 
     <div class="progress-section">
       <div class="progress-label-row">
@@ -991,6 +997,7 @@ main { overflow-y: auto; }
     </div>
 
     <div class="action-grid" id="action-list">
+      <!-- GENSTART:action-items -->
 
       <!-- 1 -->
       <div class="action-item priority-high" data-source="email" data-priority="high" data-id="task-1">
@@ -1399,6 +1406,7 @@ main { overflow-y: auto; }
           </div>
         </div>
       </div>
+      <!-- GENEND:action-items -->
 
     </div>
   </div>
@@ -1407,9 +1415,10 @@ main { overflow-y: auto; }
   <div class="section" id="meetings">
     <div class="section-header">
       <div class="section-title">Today's meetings</div>
-      <span class="section-count">2 confirmed · Thu Mar 12</span>
+      <span class="section-count"><!-- GENSTART:meeting-count -->2 confirmed · Thu Mar 12<!-- GENEND:meeting-count --></span>
     </div>
     <div class="meeting-list">
+      <!-- GENSTART:meetings -->
       <div class="meeting-card">
         <div class="meeting-time">11:00 AM</div>
         <div class="meeting-info">
@@ -1427,6 +1436,7 @@ main { overflow-y: auto; }
         </div>
         <span class="meeting-badge badge-upcoming">Upcoming</span>
       </div>
+      <!-- GENEND:meetings -->
     </div>
   </div>
 
@@ -1434,9 +1444,10 @@ main { overflow-y: auto; }
   <div class="section" id="moms">
     <div class="section-header">
       <div class="section-title">Meeting MOMs</div>
-      <span class="section-count">3 sessions today · tap to expand</span>
+      <span class="section-count"><!-- GENSTART:moms-count -->3 sessions today · tap to expand<!-- GENEND:moms-count --></span>
     </div>
     <div class="mom-list">
+      <!-- GENSTART:moms -->
 
       <div class="mom-card" onclick="toggleMOM(this)">
         <div class="mom-head">
@@ -1483,6 +1494,7 @@ main { overflow-y: auto; }
           <strong>Suggested prep:</strong> Based on Slack activity, likely to discuss Cursor Automations, the ARPU brainstorming session name vote, and ongoing AI feature work on Purchase OCR.
         </div>
       </div>
+      <!-- GENEND:moms -->
 
     </div>
   </div>
@@ -1491,9 +1503,10 @@ main { overflow-y: auto; }
   <div class="section" id="jira">
     <div class="section-header">
       <div class="section-title">Jira tasks</div>
-      <span class="section-count">5 open · MyBillBook Product</span>
+      <span class="section-count"><!-- GENSTART:jira-count -->5 open · MyBillBook Product<!-- GENEND:jira-count --></span>
     </div>
     <div class="jira-list">
+      <!-- GENSTART:jira -->
       <div class="jira-row">
         <div class="jira-key">MBBP-1413</div>
         <div class="jira-title">Design — active subtask</div>
@@ -1524,6 +1537,7 @@ main { overflow-y: auto; }
         <span class="jira-status status-todo">To Do</span>
         <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1327" target="_blank" style="padding:4px 10px;font-size:12px">Open</a>
       </div>
+      <!-- GENEND:jira -->
     </div>
   </div>
 
@@ -1531,7 +1545,7 @@ main { overflow-y: auto; }
   <div class="section" id="ai-feed">
     <div class="section-header">
       <div class="section-title">AI and design feed</div>
-      <span class="section-count">Curated from #aiverse-at-flobiz</span>
+      <span class="section-count"><!-- GENSTART:ai-count -->Curated from #aiverse-at-flobiz<!-- GENEND:ai-count --></span>
     </div>
 
     <div class="highlight" style="border-color:rgba(123,206,200,0.22);background:linear-gradient(135deg, rgba(123,206,200,0.05), rgba(176,138,232,0.03))">
@@ -1540,6 +1554,7 @@ main { overflow-y: auto; }
     </div>
 
     <div class="ai-feed">
+      <!-- GENSTART:ai-feed -->
       <div class="ai-item">
         <div class="ai-source">Gagan Lohia · #aiverse-at-flobiz · 11:09 AM today</div>
         <div class="ai-text">Latest on OpenClaw — shared on X. Possibly related to AI agent capabilities worth tracking.</div>
@@ -1575,6 +1590,7 @@ main { overflow-y: auto; }
         <div class="ai-text">Sequoia Capital: "Services: the new software" — essential read on how AI agents are transforming SaaS into services businesses. Directly relevant to FloBiz's direction.</div>
         <a class="ai-link" href="https://sequoiacap.com/article/services-the-new-software/" target="_blank">Read on Sequoia</a>
       </div>
+      <!-- GENEND:ai-feed -->
     </div>
   </div>
 
