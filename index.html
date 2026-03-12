@@ -925,11 +925,11 @@ main { overflow-y: auto; }
     <div class="header-right">
       <div class="header-tags">
         <!-- GENSTART:header-tags -->
-        <span class="tag tag-red" id="tagActionables">9 actionables</span>
-        <span class="tag tag-amber">2 meetings</span>
-        <span class="tag tag-purple">5 Jira tasks</span>
-        <span class="tag tag-teal">7 AI links</span>
-        <!-- GENEND:header-tags -->
+<span class="tag tag-red" id="tagActionables">— actionables</span>
+<span class="tag tag-amber">— meetings</span>
+<span class="tag tag-purple">— Jira tasks</span>
+<span class="tag tag-teal">— AI links</span>
+<!-- GENEND:header-tags -->
       </div>
       <div class="refresh-row">
         <button class="refresh-btn" onclick="refreshDashboard()">↻ &nbsp;Refresh</button>
@@ -941,42 +941,44 @@ main { overflow-y: auto; }
   <!-- Metrics -->
   <div class="metrics">
     <!-- GENSTART:metrics -->
-    <div class="metric">
-      <div class="metric-val" style="color:var(--danger)">3</div>
-      <div class="metric-label">High priority</div>
-    </div>
-    <div class="metric">
-      <div class="metric-val" style="color:var(--accent)">6</div>
-      <div class="metric-label">Medium priority</div>
-    </div>
-    <div class="metric">
-      <div class="metric-val" style="color:var(--accent2)">2</div>
-      <div class="metric-label">Meetings today</div>
-    </div>
-    <div class="metric">
-      <div class="metric-val" style="color:var(--purple)">5</div>
-      <div class="metric-label">Open Jira tasks</div>
-    </div>
-    <div class="metric">
-      <div class="metric-val" style="color:#c8a87b">201</div>
-      <div class="metric-label">Unread emails</div>
-    </div>
-    <!-- GENEND:metrics -->
+<div class="metric">
+  <div class="metric-val" style="color:var(--danger)">—</div>
+  <div class="metric-label">High priority</div>
+</div>
+<div class="metric">
+  <div class="metric-val" style="color:var(--accent)">—</div>
+  <div class="metric-label">Medium priority</div>
+</div>
+<div class="metric">
+  <div class="metric-val" style="color:var(--accent2)">—</div>
+  <div class="metric-label">Meetings today</div>
+</div>
+<div class="metric">
+  <div class="metric-val" style="color:var(--purple)">—</div>
+  <div class="metric-label">Open Jira tasks</div>
+</div>
+<div class="metric">
+  <div class="metric-val" style="color:#c8a87b">—</div>
+  <div class="metric-label">Unread emails</div>
+</div>
+<!-- GENEND:metrics -->
   </div>
 
   <!-- ACTIONABLES -->
   <div class="section" id="actionables">
     <div class="section-header">
       <div class="section-title">All actionables</div>
-      <span class="section-count"><!-- GENSTART:action-count -->9 items — Email · Slack · Jira<!-- GENEND:action-count --></span>
+      <span class="section-count"><!-- GENSTART:action-count -->
+— items — integrations not connected
+<!-- GENEND:action-count --></span>
     </div>
 
     <!-- GENSTART:focus -->
-    <div class="highlight">
-      <div class="highlight-label">Today's focus</div>
-      <div class="highlight-text">You have 3 high-priority items: Performance self-review, Shubhi peer review, and the Modal redesign call with Rohit. Start with the reviews — they are HR deadlines. A Figma comment from Adarsh is also waiting.</div>
-    </div>
-    <!-- GENEND:focus -->
+<div class="highlight">
+  <div class="highlight-label">Thu · Mar 12, 2026</div>
+  <div class="highlight-text">Dashboard could not fetch live data — MCP integrations for Google Calendar, Gmail, Slack, Jira, and Granola are not configured in this session. Connect these tools to get personalized daily priorities.</div>
+</div>
+<!-- GENEND:focus -->
 
     <div class="progress-section">
       <div class="progress-label-row">
@@ -998,415 +1000,8 @@ main { overflow-y: auto; }
 
     <div class="action-grid" id="action-list">
       <!-- GENSTART:action-items -->
-
-      <!-- 1 -->
-      <div class="action-item priority-high" data-source="email" data-priority="high" data-id="task-1">
-        <div class="priority-stripe"></div>
-        <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
-          <div class="action-body">
-            <div class="action-title-row">
-              <div class="action-title">Submit Performance Self-Review — FY25-26 March 2026</div>
-              <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
-            </div>
-            <div class="action-meta">
-              <span class="priority-badge pb-high">High priority</span>
-              <span class="action-source src-email">Email · Valorem/Keka</span>
-              <span>Reminded twice today · HR deadline</span>
-            </div>
-          </div>
-        </div>
-        <div class="detail-panel">
-          <div class="detail-block">
-            <div class="detail-block-label">Steps to complete</div>
-            <ol class="steps-list">
-              <li>Open Keka HR portal using the email link below</li>
-              <li>Go to: Performance &rarr; Self Review &rarr; FY25-26 March 2026</li>
-              <li>Fill each section: Goals achieved, Key contributions, Areas of growth</li>
-              <li>Reference your Jira work (Purchase OCR, Barcode Settings, MBBP-1413) as examples</li>
-              <li>Mention cross-functional work: Figma reviews, customer calls, P&D standups</li>
-              <li>Submit — you will get a confirmation email</li>
-            </ol>
-          </div>
-          <div class="detail-block">
-            <div class="ai-box">
-              <div class="ai-box-label">AI shortcut — saves 30 minutes</div>
-              <div class="ai-box-text">Open Claude and paste: <strong>"I am a product designer at a fintech. Help me write a self-review for FY25-26. My work includes: UX design for mobile billing app, DQA on Purchase OCR and Barcode features, customer call research, Figma exploration designs, and cross-functional team collaboration. Format it as bullet points for a Keka HR portal."</strong></div>
-            </div>
-          </div>
-          <div class="detail-block">
-            <div class="detail-block-label">All links</div>
-            <div class="detail-links-row">
-              <a class="detail-link primary" href="https://mail.google.com/mail/u/0/#inbox/19ce0a57597c149d" target="_blank">Open reminder email</a>
-              <a class="detail-link" href="https://flobiz.keka.com" target="_blank">Keka HR portal</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2 -->
-      <div class="action-item priority-high" data-source="email" data-priority="high" data-id="task-2">
-        <div class="priority-stripe"></div>
-        <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
-          <div class="action-body">
-            <div class="action-title-row">
-              <div class="action-title">Submit peer review for Shubhi Goel — Performance Review FY25-26</div>
-              <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
-            </div>
-            <div class="action-meta">
-              <span class="priority-badge pb-high">High priority</span>
-              <span class="action-source src-email">Email · Valorem/Keka</span>
-              <span>Pending your action · HR deadline</span>
-            </div>
-          </div>
-        </div>
-        <div class="detail-panel">
-          <div class="detail-block">
-            <div class="detail-block-label">Steps to complete</div>
-            <ol class="steps-list">
-              <li>Open the peer review email to get the Keka form link</li>
-              <li>Think of 2 to 3 specific things Shubhi does well</li>
-              <li>Think of 1 constructive area of growth — keep it professional</li>
-              <li>Rate the required dimensions on the form</li>
-              <li>Write 3 to 4 sentences of feedback — specific and honest</li>
-              <li>Submit before the HR deadline</li>
-            </ol>
-          </div>
-          <div class="detail-block">
-            <div class="ai-box">
-              <div class="ai-box-label">AI shortcut — saves 20 minutes</div>
-              <div class="ai-box-text">Tell Claude: <strong>"Write a peer review for a colleague named Shubhi. She is proactive in communication, collaborative in cross-functional work, and consistently delivers. Include one constructive suggestion about [add yours]. Make it warm, specific, and under 100 words."</strong> Edit lightly and paste into Keka.</div>
-            </div>
-          </div>
-          <div class="detail-block">
-            <div class="detail-block-label">All links</div>
-            <div class="detail-links-row">
-              <a class="detail-link primary" href="https://mail.google.com/mail/u/0/#inbox/19ce0a56d18f2e11" target="_blank">Open reminder email</a>
-              <a class="detail-link" href="https://flobiz.keka.com" target="_blank">Keka HR portal</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3 -->
-      <div class="action-item priority-high" data-source="slack" data-priority="high" data-id="task-3">
-        <div class="priority-stripe"></div>
-        <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
-          <div class="action-body">
-            <div class="action-title-row">
-              <div class="action-title">Connect with Rohit about Modal redesign — postponed from yesterday</div>
-              <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
-            </div>
-            <div class="action-meta">
-              <span class="priority-badge pb-high">High priority</span>
-              <span class="action-source src-slack">Slack · DM with Rohit Yadav</span>
-              <span>You confirmed: "let's connect tomorrow"</span>
-            </div>
-          </div>
-        </div>
-        <div class="detail-panel">
-          <div class="detail-block">
-            <div class="detail-block-label">Steps to complete</div>
-            <ol class="steps-list">
-              <li>Open the Figma modal redesign file — review current state before the call</li>
-              <li>Write down 2 to 3 questions or concerns about the redesign direction</li>
-              <li>Ping Rohit on Slack to find a time to connect</li>
-              <li>Share the Figma link in the DM so Rohit can pre-review</li>
-              <li>On the call: agree on design direction and note any changes needed</li>
-              <li>Drop a Figma comment with the agreed decisions after the call</li>
-            </ol>
-          </div>
-          <div class="detail-block">
-            <div class="ai-box">
-              <div class="ai-box-label">AI shortcut — prep in 5 minutes</div>
-              <div class="ai-box-text">Before the call, ask Claude: <strong>"What are the top UX considerations for redesigning a modal in a mobile billing app? What edge cases should I review before a design review call?"</strong> Walk into the call with focused questions.</div>
-            </div>
-          </div>
-          <div class="detail-block">
-            <div class="detail-block-label">All links</div>
-            <div class="detail-links-row">
-              <a class="detail-link primary" href="https://flobiz.slack.com/archives/D09GDC5BAG4" target="_blank">Slack DM — Rohit Yadav</a>
-              <a class="detail-link" href="https://www.figma.com" target="_blank">Figma</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4 -->
-      <div class="action-item priority-med" data-source="email" data-priority="med" data-id="task-4">
-        <div class="priority-stripe"></div>
-        <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
-          <div class="action-body">
-            <div class="action-title-row">
-              <div class="action-title">Review Figma comment from Adarsh in Exploration Web 2026</div>
-              <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
-            </div>
-            <div class="action-meta">
-              <span class="priority-badge pb-med">Medium priority</span>
-              <span class="action-source src-email">Email · Figma notification</span>
-              <span>Comment: "move create godown to header"</span>
-            </div>
-          </div>
-        </div>
-        <div class="detail-panel">
-          <div class="detail-block">
-            <div class="detail-block-label">Steps to complete</div>
-            <ol class="steps-list">
-              <li>Open the Figma notification email to get the direct comment link</li>
-              <li>Read the comment: Adarsh wants to move "Create Godown" to the header</li>
-              <li>Evaluate: does it improve discoverability? Does it fit the header space?</li>
-              <li>Check the second new comment from today as well</li>
-              <li>Reply in Figma with your decision and a brief reason (1 to 2 sentences)</li>
-              <li>Resolve the comment — whether you agree or disagree</li>
-            </ol>
-          </div>
-          <div class="detail-block">
-            <div class="ai-box">
-              <div class="ai-box-label">AI shortcut — instant UX rationale</div>
-              <div class="ai-box-text">Ask Claude: <strong>"In a mobile billing app, should Create Godown be in the main header or in a secondary location? What are the UX trade-offs between discoverability and header clutter?"</strong> Gets you a reply for Adarsh in 30 seconds.</div>
-            </div>
-          </div>
-          <div class="detail-block">
-            <div class="detail-block-label">All links</div>
-            <div class="detail-links-row">
-              <a class="detail-link primary" href="https://mail.google.com/mail/u/0/#inbox/19ce22b0c87243d5" target="_blank">Figma notification email</a>
-              <a class="detail-link" href="https://www.figma.com" target="_blank">Open Figma</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 5 -->
-      <div class="action-item priority-med" data-source="slack" data-priority="med" data-id="task-5">
-        <div class="priority-stripe"></div>
-        <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
-          <div class="action-body">
-            <div class="action-title-row">
-              <div class="action-title">Vote on brainstorming session name in #product-collaborators</div>
-              <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
-            </div>
-            <div class="action-meta">
-              <span class="priority-badge pb-med">Medium priority</span>
-              <span class="action-source src-slack">Slack · Priyanka Jain</span>
-              <span>Options: Socho Toh Sahi · ARPU Manthan · Idea Adda · Udaan Baithak</span>
-            </div>
-          </div>
-        </div>
-        <div class="detail-panel">
-          <div class="detail-block">
-            <div class="detail-block-label">Steps to complete</div>
-            <ol class="steps-list">
-              <li>Open the Slack thread using the link below</li>
-              <li>Read the 4 options: Socho Toh Sahi / ARPU Manthan / Idea Adda / Udaan Baithak</li>
-              <li>React with the emoji that matches your preferred option</li>
-              <li>Done — takes under 10 seconds</li>
-            </ol>
-          </div>
-          <div class="detail-block">
-            <div class="ai-box">
-              <div class="ai-box-label">AI shortcut — if you are undecided</div>
-              <div class="ai-box-text">Ask Claude: <strong>"Which of these names best fits an ARPU growth brainstorming session at an Indian fintech? Options: Socho Toh Sahi, ARPU Manthan, Idea Adda, Udaan Baithak. Consider: energy, memorability, and business alignment."</strong></div>
-            </div>
-          </div>
-          <div class="detail-block">
-            <div class="detail-block-label">All links</div>
-            <div class="detail-links-row">
-              <a class="detail-link primary" href="https://flobiz.slack.com/archives/C08UL2Q4MQD/p1773291745325609" target="_blank">Vote in Slack</a>
-              <a class="detail-link" href="https://flobiz.slack.com/archives/C08UL2Q4MQD" target="_blank">#product-collaborators</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 6 -->
-      <div class="action-item priority-med" data-source="slack" data-priority="med" data-id="task-6">
-        <div class="priority-stripe"></div>
-        <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
-          <div class="action-body">
-            <div class="action-title-row">
-              <div class="action-title">Provide agenda for design review meeting — Priyanka is waiting</div>
-              <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
-            </div>
-            <div class="action-meta">
-              <span class="priority-badge pb-med">Medium priority</span>
-              <span class="action-source src-slack">Slack · #product-collaborators · Mar 10</span>
-            </div>
-          </div>
-        </div>
-        <div class="detail-panel">
-          <div class="detail-block">
-            <div class="detail-block-label">Steps to complete</div>
-            <ol class="steps-list">
-              <li>Open the Slack thread where Priyanka asked for the agenda</li>
-              <li>List 3 to 4 items: MBBP-1413 progress, Web Exploration updates, modal redesign, open Q&A</li>
-              <li>Add rough time splits — for example 15 minutes each</li>
-              <li>Reply in the thread — keep it to 5 bullet points max</li>
-            </ol>
-          </div>
-          <div class="detail-block">
-            <div class="ai-box">
-              <div class="ai-box-label">AI shortcut — draft in 30 seconds</div>
-              <div class="ai-box-text">Tell Claude: <strong>"Write a 5-item agenda for a 60-minute product design review meeting. Topics: MBBP-1413 design task, Web 2026 Exploration designs, modal redesign with Rohit, Figma comments review, open discussion. Format it as a short Slack message."</strong></div>
-            </div>
-          </div>
-          <div class="detail-block">
-            <div class="detail-block-label">All links</div>
-            <div class="detail-links-row">
-              <a class="detail-link primary" href="https://flobiz.slack.com/archives/C08UL2Q4MQD/p1773123287932469" target="_blank">Priyanka's message</a>
-              <a class="detail-link" href="https://flobiz.slack.com/archives/C08UL2Q4MQD" target="_blank">#product-collaborators</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 7 -->
-      <div class="action-item priority-med" data-source="jira" data-priority="med" data-id="task-7">
-        <div class="priority-stripe"></div>
-        <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
-          <div class="action-body">
-            <div class="action-title-row">
-              <div class="action-title">MBBP-1413 — Finish design and move to review</div>
-              <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
-            </div>
-            <div class="action-meta">
-              <span class="priority-badge pb-med">Medium priority</span>
-              <span class="action-source src-jira">Jira · MyBillBook Product</span>
-              <span>In Progress · your active design task</span>
-            </div>
-          </div>
-        </div>
-        <div class="detail-panel">
-          <div class="detail-block">
-            <div class="detail-block-label">Steps to complete</div>
-            <ol class="steps-list">
-              <li>Open the Jira ticket — review acceptance criteria and comments</li>
-              <li>Open Figma and complete the pending design work</li>
-              <li>Check edge cases: empty states, error states, loading states</li>
-              <li>Paste the Figma link in the Jira ticket comments</li>
-              <li>Tag the engineer or PM for review in the comment</li>
-              <li>Move the ticket status from In Progress to In Review</li>
-            </ol>
-          </div>
-          <div class="detail-block">
-            <div class="ai-box">
-              <div class="ai-box-label">AI shortcut — catch edge cases before review</div>
-              <div class="ai-box-text">Paste the Jira ticket description into Claude and ask: <strong>"I am designing this feature. What edge cases, error states, and accessibility considerations should I design for before submitting for developer review?"</strong> Catches gaps before they come back as review comments.</div>
-            </div>
-          </div>
-          <div class="detail-block">
-            <div class="detail-block-label">All links</div>
-            <div class="detail-links-row">
-              <a class="detail-link primary" href="https://flobiz.atlassian.net/browse/MBBP-1413" target="_blank">MBBP-1413 in Jira</a>
-              <a class="detail-link" href="https://www.figma.com" target="_blank">Figma</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 8 -->
-      <div class="action-item priority-med" data-source="email" data-priority="med" data-id="task-8">
-        <div class="priority-stripe"></div>
-        <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
-          <div class="action-body">
-            <div class="action-title-row">
-              <div class="action-title">BillBook 4.6.9 iOS — ready to test via Firebase App Distribution</div>
-              <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
-            </div>
-            <div class="action-meta">
-              <span class="priority-badge pb-med">Medium priority</span>
-              <span class="action-source src-email">Email · Firebase App Distribution</span>
-              <span>Offer settings fix · date overlap fix · item search API migration</span>
-            </div>
-          </div>
-        </div>
-        <div class="detail-panel">
-          <div class="detail-block">
-            <div class="detail-block-label">Steps to complete</div>
-            <ol class="steps-list">
-              <li>Open the Firebase email and tap the install link on your iPhone</li>
-              <li>Install BillBook 4.6.9 build 169 from Firebase App Distribution</li>
-              <li>Test offer settings — create and edit an offer, verify display</li>
-              <li>Test date overlap — create invoices with overlapping dates, confirm fix works</li>
-              <li>Test item search — search for items in a new invoice, check speed and results</li>
-              <li>Log any new bugs found in Jira with screen recordings</li>
-            </ol>
-          </div>
-          <div class="detail-block">
-            <div class="ai-box">
-              <div class="ai-box-label">AI shortcut — generate a test checklist</div>
-              <div class="ai-box-text">Tell Claude: <strong>"Generate a QA test checklist for a mobile billing app with these fixes: offer settings display, date overlap bug in invoices, migrated item search API. Format as a short checklist I can run through in 15 minutes on an iPhone."</strong></div>
-            </div>
-          </div>
-          <div class="detail-block">
-            <div class="detail-block-label">All links</div>
-            <div class="detail-links-row">
-              <a class="detail-link primary" href="https://mail.google.com/mail/u/0/#inbox/19ce24294350b6c5" target="_blank">Firebase install email</a>
-              <a class="detail-link" href="https://appdistribution.firebase.google.com" target="_blank">Firebase portal</a>
-              <a class="detail-link" href="https://flobiz.atlassian.net" target="_blank">Jira — log bugs</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 9 -->
-      <div class="action-item priority-low" data-source="slack" data-priority="low" data-id="task-9">
-        <div class="priority-stripe"></div>
-        <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
-          <div class="action-body">
-            <div class="action-title-row">
-              <div class="action-title">Follow up with Adarsh — invoice drafts and multiple tabs feature</div>
-              <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
-            </div>
-            <div class="action-meta">
-              <span class="priority-badge pb-low">Low priority</span>
-              <span class="action-source src-slack">Slack · Adarsh Pankaj</span>
-              <span>"Bro lets connect whenever free" — user feedback on multi-tab invoicing</span>
-            </div>
-          </div>
-        </div>
-        <div class="detail-panel">
-          <div class="detail-block">
-            <div class="detail-block-label">Steps to complete</div>
-            <ol class="steps-list">
-              <li>Ping Adarsh on Slack — ask when he is free for a quick call</li>
-              <li>Before the call: review the multi-tab constraint — drafts are lost when switching tabs</li>
-              <li>On the call: listen to feedback on invoice drafts and multi-tab use case</li>
-              <li>Note the key pain points and user workarounds</li>
-              <li>After the call: add a Jira ticket or Figma note with insights for future planning</li>
-            </ol>
-          </div>
-          <div class="detail-block">
-            <div class="ai-box">
-              <div class="ai-box-label">AI shortcut — prep with patterns before the call</div>
-              <div class="ai-box-text">Ask Claude: <strong>"What are common UX patterns for multi-tab document creation in mobile apps? How do billing apps handle draft persistence when users switch between documents? I am preparing for a user feedback call."</strong></div>
-            </div>
-          </div>
-          <div class="detail-block">
-            <div class="detail-block-label">All links</div>
-            <div class="detail-links-row">
-              <a class="detail-link primary" href="https://flobiz.slack.com" target="_blank">Slack — message Adarsh</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
-              <a class="detail-link" href="https://flobiz.atlassian.net" target="_blank">Jira — log insights</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- GENEND:action-items -->
+<div style="color:var(--muted);font-size:13px;padding:16px 0;">MCP integrations not connected — run <code>claude mcp add</code> for Google Calendar, Gmail, Slack, Jira, and Granola to populate this section.</div>
+<!-- GENEND:action-items -->
 
     </div>
   </div>
@@ -1415,28 +1010,14 @@ main { overflow-y: auto; }
   <div class="section" id="meetings">
     <div class="section-header">
       <div class="section-title">Today's meetings</div>
-      <span class="section-count"><!-- GENSTART:meeting-count -->2 confirmed · Thu Mar 12<!-- GENEND:meeting-count --></span>
+      <span class="section-count"><!-- GENSTART:meeting-count -->
+— confirmed · Thu Mar 12
+<!-- GENEND:meeting-count --></span>
     </div>
     <div class="meeting-list">
       <!-- GENSTART:meetings -->
-      <div class="meeting-card">
-        <div class="meeting-time">11:00 AM</div>
-        <div class="meeting-info">
-          <div class="meeting-title">P&D Standup</div>
-          <div class="meeting-meta">30 min · Organizer: Nishit Bhatt · Nishit, Shubhi, Soubia, Sumit, Ankit, Priyanka, Adarsh, Nikhil + you</div>
-        </div>
-        <span class="meeting-badge badge-done">Done</span>
-      </div>
-      <div class="meeting-card">
-        <div class="meeting-time">5:00 PM</div>
-        <div class="meeting-info">
-          <div class="meeting-title">Product Gupshup</div>
-          <div class="meeting-meta">60 min · Organizer: Priyanka Jain · Full product team (12 attendees) · Recurring</div>
-          <div class="meeting-countdown" id="gupshupCountdown"></div>
-        </div>
-        <span class="meeting-badge badge-upcoming">Upcoming</span>
-      </div>
-      <!-- GENEND:meetings -->
+<div style="color:var(--muted);font-size:13px;padding:16px 0;">MCP integrations not connected — run <code>claude mcp add</code> for Google Calendar, Gmail, Slack, Jira, and Granola to populate this section.</div>
+<!-- GENEND:meetings -->
     </div>
   </div>
 
@@ -1444,57 +1025,14 @@ main { overflow-y: auto; }
   <div class="section" id="moms">
     <div class="section-header">
       <div class="section-title">Meeting MOMs</div>
-      <span class="section-count"><!-- GENSTART:moms-count -->3 sessions today · tap to expand<!-- GENEND:moms-count --></span>
+      <span class="section-count"><!-- GENSTART:moms-count -->
+— meetings · tap to expand
+<!-- GENEND:moms-count --></span>
     </div>
     <div class="mom-list">
       <!-- GENSTART:moms -->
-
-      <div class="mom-card" onclick="toggleMOM(this)">
-        <div class="mom-head">
-          <div>
-            <div class="mom-title-text">Flobiz POS Billing — Customer Feature Review</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:3px">Mar 12 · 10:01 AM · Siddhartha Kumar</div>
-          </div>
-          <span class="chevron">&#9660;</span>
-        </div>
-        <div class="mom-body-text">
-          <strong>Key customer requests logged:</strong><br><br>
-          GST visibility toggle — hide or show GST on invoices (MPOS customer-facing display)<br><br>
-          Multi-invoice creation — view other invoices while creating new ones. Technical constraint: drafts are lost when switching tabs.<br><br>
-          Thermal bill customization before printing — feature ready, rolling out to select customers, full rollout in 10 days to 1 month.<br><br>
-          Local language item search — AI translation proposed as solution, bills stay in English.<br><br>
-          Easier stock management — demonstrated bulk GST editing and stock via purchase invoice.<br><br>
-          <strong>Next steps:</strong> Dev team to review GST toggle and local language search. Follow-up call scheduled for My Bill Book improvements.
-        </div>
-      </div>
-
-      <div class="mom-card" onclick="toggleMOM(this)">
-        <div class="mom-head">
-          <div>
-            <div class="mom-title-text">Invoice Feature Details — Photography Business Billing</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:3px">Mar 12 · 9:46 AM · Siddhartha Kumar</div>
-          </div>
-          <span class="chevron">&#9660;</span>
-        </div>
-        <div class="mom-body-text">
-          No summary generated yet. Notes captured in Granola — open Granola to view the transcript.
-        </div>
-      </div>
-
-      <div class="mom-card" onclick="toggleMOM(this)">
-        <div class="mom-head">
-          <div>
-            <div class="mom-title-text">Product Gupshup — Pre-read</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:3px">Mar 12 · 5:00 PM · Upcoming</div>
-          </div>
-          <span class="chevron">&#9660;</span>
-        </div>
-        <div class="mom-body-text">
-          Meeting is at 5 PM today. MOM will be auto-captured in Granola after the meeting.<br><br>
-          <strong>Suggested prep:</strong> Based on Slack activity, likely to discuss Cursor Automations, the ARPU brainstorming session name vote, and ongoing AI feature work on Purchase OCR.
-        </div>
-      </div>
-      <!-- GENEND:moms -->
+<div style="color:var(--muted);font-size:13px;padding:16px 0;">MCP integrations not connected — run <code>claude mcp add</code> for Google Calendar, Gmail, Slack, Jira, and Granola to populate this section.</div>
+<!-- GENEND:moms -->
 
     </div>
   </div>
@@ -1503,41 +1041,14 @@ main { overflow-y: auto; }
   <div class="section" id="jira">
     <div class="section-header">
       <div class="section-title">Jira tasks</div>
-      <span class="section-count"><!-- GENSTART:jira-count -->5 open · MyBillBook Product<!-- GENEND:jira-count --></span>
+      <span class="section-count"><!-- GENSTART:jira-count -->
+— open · integrations not connected
+<!-- GENEND:jira-count --></span>
     </div>
     <div class="jira-list">
       <!-- GENSTART:jira -->
-      <div class="jira-row">
-        <div class="jira-key">MBBP-1413</div>
-        <div class="jira-title">Design — active subtask</div>
-        <span class="jira-status status-progress">In Progress</span>
-        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1413" target="_blank" style="padding:4px 10px;font-size:12px">Open</a>
-      </div>
-      <div class="jira-row">
-        <div class="jira-key">MBBP-1264</div>
-        <div class="jira-title">Scan and record bills using Mira AI — Purchase OCR iOS DQA</div>
-        <span class="jira-status status-todo">To Do</span>
-        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1264" target="_blank" style="padding:4px 10px;font-size:12px">Open</a>
-      </div>
-      <div class="jira-row">
-        <div class="jira-key">MBBP-1407</div>
-        <div class="jira-title">Design — subtask</div>
-        <span class="jira-status status-todo">To Do</span>
-        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1407" target="_blank" style="padding:4px 10px;font-size:12px">Open</a>
-      </div>
-      <div class="jira-row">
-        <div class="jira-key">MBBP-1376</div>
-        <div class="jira-title">Barcode Settings — DQA</div>
-        <span class="jira-status status-todo">To Do</span>
-        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1376" target="_blank" style="padding:4px 10px;font-size:12px">Open</a>
-      </div>
-      <div class="jira-row">
-        <div class="jira-key">MBBP-1327</div>
-        <div class="jira-title">Purchase OCR learning and mapping — DQA</div>
-        <span class="jira-status status-todo">To Do</span>
-        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1327" target="_blank" style="padding:4px 10px;font-size:12px">Open</a>
-      </div>
-      <!-- GENEND:jira -->
+<div style="color:var(--muted);font-size:13px;padding:16px 0;">MCP integrations not connected — run <code>claude mcp add</code> for Google Calendar, Gmail, Slack, Jira, and Granola to populate this section.</div>
+<!-- GENEND:jira -->
     </div>
   </div>
 
@@ -1545,7 +1056,9 @@ main { overflow-y: auto; }
   <div class="section" id="ai-feed">
     <div class="section-header">
       <div class="section-title">AI and design feed</div>
-      <span class="section-count"><!-- GENSTART:ai-count -->Curated from #aiverse-at-flobiz<!-- GENEND:ai-count --></span>
+      <span class="section-count"><!-- GENSTART:ai-count -->
+Curated from #aiverse-at-flobiz · — links
+<!-- GENEND:ai-count --></span>
     </div>
 
     <div class="highlight" style="border-color:rgba(123,206,200,0.22);background:linear-gradient(135deg, rgba(123,206,200,0.05), rgba(176,138,232,0.03))">
@@ -1555,42 +1068,8 @@ main { overflow-y: auto; }
 
     <div class="ai-feed">
       <!-- GENSTART:ai-feed -->
-      <div class="ai-item">
-        <div class="ai-source">Gagan Lohia · #aiverse-at-flobiz · 11:09 AM today</div>
-        <div class="ai-text">Latest on OpenClaw — shared on X. Possibly related to AI agent capabilities worth tracking.</div>
-        <a class="ai-link" href="https://x.com/openclaw/status/2031965133405073823" target="_blank">View on X (Twitter)</a>
-      </div>
-      <div class="ai-item">
-        <div class="ai-source">Nishit Bhatt · #aiverse-at-flobiz · 10:12 AM today</div>
-        <div class="ai-text">YouTube video shared — AI and product deep dive on new model capabilities or workflow automation.</div>
-        <a class="ai-link" href="https://www.youtube.com/watch?v=i1tZN41VKcE" target="_blank">Watch on YouTube</a>
-      </div>
-      <div class="ai-item">
-        <div class="ai-source">Nishit Bhatt · #aiverse-at-flobiz · 10:11 AM today</div>
-        <div class="ai-text">latent.space — "Reviews are dead" — how AI is reshaping feedback and product review loops. Recommended reading for product designers.</div>
-        <a class="ai-link" href="https://www.latent.space/p/reviews-dead" target="_blank">Read the article</a>
-      </div>
-      <div class="ai-item">
-        <div class="ai-source">Rakesh Yadav · #aiverse-at-flobiz · 9:48 AM today</div>
-        <div class="ai-text">Skeptical take on MCP — "Is there any true benefit of MCP at all?" — worth reading before forming opinions on MCP integration.</div>
-        <a class="ai-link" href="https://x.com/dzhng/status/2029518820872945889" target="_blank">View thread on X</a>
-      </div>
-      <div class="ai-item">
-        <div class="ai-source">Vaibhav Shrivastav · #aiverse-at-flobiz · Mar 6</div>
-        <div class="ai-text">Cursor Automations demo: Slack trigger, AI analyses issue and image, generates PR, you just review. "Wake up, review code, go back to sleep" workflow. Pros: fully customizable triggers. Cons: only high-token models, on-demand pricing.</div>
-        <a class="ai-link" href="https://flobiz.slack.com/archives/C08NQUX9CEQ" target="_blank">Read full thread in Slack</a>
-      </div>
-      <div class="ai-item">
-        <div class="ai-source">Priyanka Jain · #aiverse-at-flobiz · Mar 10</div>
-        <div class="ai-text">LinkedIn: "I cut our AI costs by 80% — an embarrassingly simple fix" — practical cost-reduction strategies for AI-powered products.</div>
-        <a class="ai-link" href="https://www.linkedin.com/pulse/i-cut-our-ai-costs-80-fix-embarrassingly-simple-once-what-gaurav-glhkc" target="_blank">Read on LinkedIn</a>
-      </div>
-      <div class="ai-item">
-        <div class="ai-source">Punit Goswami · #aiverse-at-flobiz · Mar 8</div>
-        <div class="ai-text">Sequoia Capital: "Services: the new software" — essential read on how AI agents are transforming SaaS into services businesses. Directly relevant to FloBiz's direction.</div>
-        <a class="ai-link" href="https://sequoiacap.com/article/services-the-new-software/" target="_blank">Read on Sequoia</a>
-      </div>
-      <!-- GENEND:ai-feed -->
+<div style="color:var(--muted);font-size:13px;padding:16px 0;">MCP integrations not connected — run <code>claude mcp add</code> for Google Calendar, Gmail, Slack, Jira, and Granola to populate this section.</div>
+<!-- GENEND:ai-feed -->
     </div>
   </div>
 
