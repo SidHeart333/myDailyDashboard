@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SK · Daily Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0d0f;
+  --surface: #161618;
+  --surface2: #1e1e21;
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.14);
+  --text: #f0ede8;
+  --muted: #7a7870;
+  --accent: #e8c87a;
+  --accent-dim: rgba(232,200,122,0.12);
+  --accent2: #7bcec8;
+  --accent2-dim: rgba(123,206,200,0.1);
+  --danger: #e87a7a;
+  --danger-dim: rgba(232,122,122,0.1);
+  --success: #7ac47a;
+  --success-dim: rgba(122,196,122,0.1);
+  --purple: #a87be8;
+  --purple-dim: rgba(168,123,232,0.1);
+  --r: 10px;
+  --r-lg: 16px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Subtle grain */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Layout */
+.shell {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+nav {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 20px;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  overflow-y: auto;
+}
+.logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: var(--accent);
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+.logo-sub {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 32px;
+}
+.nav-section {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  margin-top: 20px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--muted);
+  transition: all 0.15s;
+  margin-bottom: 2px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+}
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); }
+.nav-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+.nav-badge {
+  margin-left: auto;
+  background: var(--danger);
+  color: #000;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 20px;
+  min-width: 18px;
+  text-align: center;
+}
+.date-chip {
+  margin-top: auto;
+  padding: 12px;
+  background: var(--surface2);
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+}
+.date-chip .day {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  color: var(--text);
+  line-height: 1;
+}
+.date-chip .full {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+  font-family: 'DM Mono', monospace;
+}
+
+/* Main */
+main { overflow-y: auto; }
+
+/* Header */
+.header {
+  padding: 32px 36px 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.header-greeting {
+  font-family: 'DM Serif Display', serif;
+  font-size: 32px;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.header-greeting em {
+  font-style: italic;
+  color: var(--accent);
+}
+.header-meta { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.header-tags { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 6px; }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid;
+  font-family: 'DM Mono', monospace;
+}
+.tag-amber { color: var(--accent); border-color: rgba(232,200,122,0.3); background: var(--accent-dim); }
+.tag-teal { color: var(--accent2); border-color: rgba(123,206,200,0.3); background: var(--accent2-dim); }
+.tag-red { color: var(--danger); border-color: rgba(232,122,122,0.3); background: var(--danger-dim); }
+.tag-purple { color: var(--purple); border-color: rgba(168,123,232,0.3); background: var(--purple-dim); }
+
+/* Sections */
+.section { padding: 28px 36px; }
+.section + .section { border-top: 1px solid var(--border); }
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.section-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Metrics row */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  padding: 24px 36px;
+  border-bottom: 1px solid var(--border);
+}
+.metric {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px;
+  transition: border-color 0.2s;
+}
+.metric:hover { border-color: var(--border-hover); }
+.metric-val {
+  font-family: 'DM Serif Display', serif;
+  font-size: 30px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.metric-label { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+/* Actionables — MAIN SECTION */
+.action-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.action-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  transition: all 0.15s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.action-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+.action-item.priority-high::before { background: var(--danger); }
+.action-item.priority-med::before { background: var(--accent); }
+.action-item.priority-low::before { background: var(--muted); }
+.action-item:hover { border-color: var(--border-hover); background: var(--surface2); }
+.action-check {
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border-hover);
+  flex-shrink: 0;
+  margin-top: 1px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.action-check:hover { border-color: var(--accent); }
+.action-item.done .action-check {
+  background: var(--success-dim);
+  border-color: var(--success);
+}
+.action-item.done .action-check::after {
+  content: '✓';
+  font-size: 11px;
+  color: var(--success);
+  font-weight: 600;
+}
+.action-item.done .action-title { text-decoration: line-through; color: var(--muted); }
+.action-body { flex: 1; }
+.action-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.action-meta { font-size: 11px; color: var(--muted); display: flex; gap: 10px; flex-wrap: wrap; }
+.action-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  border: 1px solid;
+}
+.src-email { color: #c8a87b; border-color: rgba(200,168,123,0.3); background: rgba(200,168,123,0.08); }
+.src-slack { color: #7b9ee8; border-color: rgba(123,158,232,0.3); background: rgba(123,158,232,0.08); }
+.src-jira { color: var(--purple); border-color: rgba(168,123,232,0.3); background: var(--purple-dim); }
+.action-link {
+  font-size: 11px;
+  color: var(--accent2);
+  text-decoration: none;
+  font-family: 'DM Mono', monospace;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+.action-link:hover { opacity: 1; }
+.priority-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.p-high { background: var(--danger); }
+.p-med { background: var(--accent); }
+.p-low { background: var(--muted); }
+
+/* Meetings */
+.meeting-list { display: flex; flex-direction: column; gap: 8px; }
+.meeting-card {
+  display: flex;
+  gap: 16px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  align-items: flex-start;
+}
+.meeting-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  min-width: 60px;
+  padding-top: 2px;
+}
+.meeting-info { flex: 1; }
+.meeting-title { font-size: 13px; font-weight: 500; }
+.meeting-meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.meeting-badge {
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'DM Mono', monospace;
+}
+.badge-live { background: rgba(232,122,122,0.2); color: var(--danger); border: 1px solid rgba(232,122,122,0.3); }
+.badge-done { background: var(--success-dim); color: var(--success); border: 1px solid rgba(122,196,122,0.3); }
+.badge-upcoming { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(232,200,122,0.3); }
+
+/* MOM */
+.mom-list { display: flex; flex-direction: column; gap: 10px; }
+.mom-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.mom-head {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  gap: 10px;
+}
+.mom-head:hover { background: var(--surface2); }
+.mom-title-text { font-size: 13px; font-weight: 500; }
+.mom-body-text {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--border);
+  display: none;
+}
+.mom-body-text.open { display: block; padding-top: 12px; }
+.mom-body-text strong { color: var(--text); font-weight: 500; }
+.chevron { color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+.mom-card.expanded .chevron { transform: rotate(180deg); }
+
+/* AI Feed */
+.ai-feed { display: flex; flex-direction: column; gap: 8px; }
+.ai-item {
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  transition: border-color 0.15s;
+}
+.ai-item:hover { border-color: var(--border-hover); }
+.ai-source {
+  font-size: 10px;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 5px;
+}
+.ai-text { font-size: 13px; color: var(--text); line-height: 1.5; margin-bottom: 6px; }
+.ai-link {
+  font-size: 11px;
+  color: var(--accent2);
+  text-decoration: none;
+  font-family: 'DM Mono', monospace;
+}
+.ai-link:hover { text-decoration: underline; }
+
+/* Jira */
+.jira-list { display: flex; flex-direction: column; gap: 7px; }
+.jira-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+}
+.jira-key {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  min-width: 90px;
+}
+.jira-title { font-size: 13px; color: var(--text); flex: 1; }
+.jira-status {
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  flex-shrink: 0;
+}
+.status-progress { background: var(--accent-dim); color: var(--accent); }
+.status-todo { background: var(--surface2); color: var(--muted); }
+
+/* Filter bar */
+.filter-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--accent-dim);
+  border-color: rgba(232,200,122,0.4);
+  color: var(--accent);
+}
+
+/* Highlight box */
+.highlight {
+  background: linear-gradient(135deg, rgba(232,200,122,0.06), rgba(123,206,200,0.04));
+  border: 1px solid rgba(232,200,122,0.2);
+  border-radius: var(--r-lg);
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+.highlight-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 6px; }
+.highlight-text { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+/* Scroll sections target */
+#actionables, #meetings, #moms, #jira, #ai-feed { scroll-margin-top: 20px; }
+
+/* Animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section, .metrics { animation: fadeUp 0.3s ease both; }
+.metrics { animation-delay: 0.05s; }
+.section:nth-child(3) { animation-delay: 0.1s; }
+.section:nth-child(4) { animation-delay: 0.15s; }
+.section:nth-child(5) { animation-delay: 0.2s; }
+.section:nth-child(6) { animation-delay: 0.25s; }
+.section:nth-child(7) { animation-delay: 0.3s; }
+
+/* Pulse for live */
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.pulse { animation: pulse 2s infinite; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+/* Responsive */
+@media (max-width: 700px) {
+  .shell { grid-template-columns: 1fr; }
+  nav { position: relative; height: auto; flex-direction: row; flex-wrap: wrap; gap: 4px; padding: 16px; }
+  .date-chip, .nav-section { display: none; }
+  .section, .metrics, .header { padding-left: 20px; padding-right: 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<!-- SIDEBAR -->
+<nav>
+  <div class="logo">SK ·</div>
+  <div class="logo-sub">daily dashboard</div>
+
+  <div class="nav-section">Today</div>
+  <a class="nav-item active" href="#actionables">
+    <div class="nav-dot"></div> Actionables
+    <span class="nav-badge">9</span>
+  </a>
+  <a class="nav-item" href="#meetings">
+    <div class="nav-dot"></div> Meetings
+  </a>
+  <a class="nav-item" href="#moms">
+    <div class="nav-dot"></div> Meeting MOMs
+  </a>
+
+  <div class="nav-section">Work</div>
+  <a class="nav-item" href="#jira">
+    <div class="nav-dot"></div> Jira tasks
+  </a>
+  <a class="nav-item" href="#ai-feed">
+    <div class="nav-dot"></div> AI feed
+  </a>
+
+  <div class="date-chip">
+    <div class="day">12</div>
+    <div class="full">THU · MAR 2026</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <div class="header-greeting">Good morning,<br><em>Siddhartha.</em></div>
+      <div class="header-meta">siddhartha.kumar@flobiz.in · Bengaluru</div>
+    </div>
+    <div class="header-tags">
+      <span class="tag tag-red">9 actionables</span>
+      <span class="tag tag-amber">2 meetings</span>
+      <span class="tag tag-purple">5 Jira tasks</span>
+      <span class="tag tag-teal">7 AI links</span>
+    </div>
+  </div>
+
+  <!-- Metrics -->
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-val" style="color:var(--danger)">3</div>
+      <div class="metric-label">🔴 high priority</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" style="color:var(--accent)">6</div>
+      <div class="metric-label">🟡 medium priority</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" style="color:var(--accent2)">2</div>
+      <div class="metric-label">📅 meetings today</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" style="color:var(--purple)">5</div>
+      <div class="metric-label">🎯 open Jira tasks</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" style="color: #c8a87b">201</div>
+      <div class="metric-label">📬 unread emails</div>
+    </div>
+  </div>
+
+  <!-- ACTIONABLES -->
+  <div class="section" id="actionables">
+    <div class="section-header">
+      <div class="section-title">All actionables</div>
+      <div class="section-count">9 items across Email · Slack · Jira</div>
+    </div>
+
+    <div class="highlight">
+      <div class="highlight-label">⚡ Today's focus</div>
+      <div class="highlight-text">You have 3 high-priority items: Performance self-review (deadline unclear), Shubhi's peer review, and the Modal redesign review with Rohit. Also a Figma comment from Adarsh waiting on your response. Start with the reviews — they're HR deadlines.</div>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterActions('all', this)">All</button>
+      <button class="filter-btn" onclick="filterActions('email', this)">Email</button>
+      <button class="filter-btn" onclick="filterActions('slack', this)">Slack</button>
+      <button class="filter-btn" onclick="filterActions('jira', this)">Jira</button>
+      <button class="filter-btn" onclick="filterActions('high', this)">High priority</button>
+    </div>
+
+    <div class="action-grid" id="action-list">
+
+      <!-- HIGH PRIORITY -->
+      <div class="action-item priority-high" data-source="email" data-priority="high">
+        <div class="action-check" onclick="toggleDone(this)"></div>
+        <div class="priority-dot p-high"></div>
+        <div class="action-body">
+          <div class="action-title">Submit Performance Self-Review — FY25-26 March 2026</div>
+          <div class="action-meta">
+            <span class="action-source src-email">📧 Email · Valorem/Keka</span>
+            <span>Reminded twice today</span>
+          </div>
+        </div>
+        <a class="action-link" href="https://mail.google.com/mail/u/0/#inbox/19ce0a57597c149d" target="_blank">↗ Open email</a>
+      </div>
+
+      <div class="action-item priority-high" data-source="email" data-priority="high">
+        <div class="action-check" onclick="toggleDone(this)"></div>
+        <div class="priority-dot p-high"></div>
+        <div class="action-body">
+          <div class="action-title">Submit peer review for Shubhi Goel — Performance Review FY25-26</div>
+          <div class="action-meta">
+            <span class="action-source src-email">📧 Email · Valorem/Keka</span>
+            <span>Pending your action</span>
+          </div>
+        </div>
+        <a class="action-link" href="https://mail.google.com/mail/u/0/#inbox/19ce0a56d18f2e11" target="_blank">↗ Open email</a>
+      </div>
+
+      <div class="action-item priority-high" data-source="slack" data-priority="high">
+        <div class="action-check" onclick="toggleDone(this)"></div>
+        <div class="priority-dot p-high"></div>
+        <div class="action-body">
+          <div class="action-title">Connect with Rohit tomorrow re: Modal redesign (postponed from today)</div>
+          <div class="action-meta">
+            <span class="action-source src-slack">💬 Slack · DM with Rohit Yadav</span>
+            <span>You said "let's connect tomorrow" — confirmed ✓</span>
+          </div>
+        </div>
+        <a class="action-link" href="https://flobiz.slack.com/archives/D09GDC5BAG4" target="_blank">↗ Slack thread</a>
+      </div>
+
+      <!-- MEDIUM PRIORITY -->
+      <div class="action-item priority-med" data-source="email" data-priority="med">
+        <div class="action-check" onclick="toggleDone(this)"></div>
+        <div class="priority-dot p-med"></div>
+        <div class="action-body">
+          <div class="action-title">Review Figma comment from Adarsh in 🔮 Exploration_Web 2026</div>
+          <div class="action-meta">
+            <span class="action-source src-email">📧 Email · Figma notification</span>
+            <span>Comment: "move create godown to header" + today's new comment</span>
+          </div>
+        </div>
+        <a class="action-link" href="https://mail.google.com/mail/u/0/#inbox/19ce22b0c87243d5" target="_blank">↗ Open Figma</a>
+      </div>
+
+      <div class="action-item priority-med" data-source="slack" data-priority="med">
+        <div class="action-check" onclick="toggleDone(this)"></div>
+        <div class="priority-dot p-med"></div>
+        <div class="action-body">
+          <div class="action-title">Vote on brainstorming session name in #product-collaborators</div>
+          <div class="action-meta">
+            <span class="action-source src-slack">💬 Slack · Priyanka Jain · #product-collaborators</span>
+            <span>Options: Socho Toh Sahi! / ARPU Manthan / Idea Adda / Udaan Baithak</span>
+          </div>
+        </div>
+        <a class="action-link" href="https://flobiz.slack.com/archives/C08UL2Q4MQD/p1773291745325609" target="_blank">↗ Vote now</a>
+      </div>
+
+      <div class="action-item priority-med" data-source="slack" data-priority="med">
+        <div class="action-check" onclick="toggleDone(this)"></div>
+        <div class="priority-dot p-med"></div>
+        <div class="action-body">
+          <div class="action-title">Provide agenda for design review meeting (Priyanka asked: "@Siddhartha agenda for design review meeting today?")</div>
+          <div class="action-meta">
+            <span class="action-source src-slack">💬 Slack · #product-collaborators · Mar 10</span>
+            <span>Priyanka Jain is waiting</span>
+          </div>
+        </div>
+        <a class="action-link" href="https://flobiz.slack.com/archives/C08UL2Q4MQD/p1773123287932469" target="_blank">↗ View message</a>
+      </div>
+
+      <div class="action-item priority-med" data-source="jira" data-priority="med">
+        <div class="action-check" onclick="toggleDone(this)"></div>
+        <div class="priority-dot p-med"></div>
+        <div class="action-body">
+          <div class="action-title">MBBP-1413 — Design (In Progress) · Unblock and move to review</div>
+          <div class="action-meta">
+            <span class="action-source src-jira">🎯 Jira · MyBillBook Product</span>
+            <span>Currently In Progress — your active design task</span>
+          </div>
+        </div>
+        <a class="action-link" href="https://flobiz.atlassian.net/browse/MBBP-1413" target="_blank">↗ Open Jira</a>
+      </div>
+
+      <div class="action-item priority-med" data-source="email" data-priority="med">
+        <div class="action-check" onclick="toggleDone(this)"></div>
+        <div class="priority-dot p-med"></div>
+        <div class="action-body">
+          <div class="action-title">BillBook 4.6.9 (169) for iOS ready to test — check Tandoor MR release notes</div>
+          <div class="action-meta">
+            <span class="action-source src-email">📧 Email · Firebase App Distribution</span>
+            <span>Offer settings fixed, date overlap bug fixed, migrated item search API</span>
+          </div>
+        </div>
+        <a class="action-link" href="https://mail.google.com/mail/u/0/#inbox/19ce24294350b6c5" target="_blank">↗ Open email</a>
+      </div>
+
+      <!-- LOW PRIORITY -->
+      <div class="action-item priority-low" data-source="slack" data-priority="low">
+        <div class="action-check" onclick="toggleDone(this)"></div>
+        <div class="priority-dot p-low"></div>
+        <div class="action-body">
+          <div class="action-title">Follow up with Adarsh Pankaj — invoice drafts & multiple tabs feature discussion</div>
+          <div class="action-meta">
+            <span class="action-source src-slack">💬 Slack · Adarsh Pankaj</span>
+            <span>"Bro lets connect whenever free" — user feedback on multi-tab invoicing</span>
+          </div>
+        </div>
+        <a class="action-link" href="https://flobiz.slack.com" target="_blank">↗ Slack</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MEETINGS -->
+  <div class="section" id="meetings">
+    <div class="section-header">
+      <div class="section-title">Today's meetings</div>
+      <div class="section-count">2 confirmed · Thu Mar 12</div>
+    </div>
+    <div class="meeting-list">
+      <div class="meeting-card">
+        <div class="meeting-time">11:00 AM</div>
+        <div class="meeting-info">
+          <div class="meeting-title">🧋 P&D Standup</div>
+          <div class="meeting-meta">30 min · Organizer: Nishit Bhatt · Nishit, Shubhi, Soubia, Sumit, Ankit, Priyanka, Adarsh, Nikhil + you</div>
+        </div>
+        <span class="meeting-badge badge-done">Done</span>
+      </div>
+      <div class="meeting-card">
+        <div class="meeting-time">5:00 PM</div>
+        <div class="meeting-info">
+          <div class="meeting-title">🧋 Product Gupshup</div>
+          <div class="meeting-meta">60 min · Organizer: Priyanka Jain · Full product team (12 attendees) · Recurring</div>
+        </div>
+        <span class="meeting-badge badge-upcoming">Upcoming</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEETING MOMs -->
+  <div class="section" id="moms">
+    <div class="section-header">
+      <div class="section-title">Meeting MOMs</div>
+      <div class="section-count">3 sessions today · tap to expand</div>
+    </div>
+    <div class="mom-list">
+
+      <div class="mom-card" onclick="toggleMOM(this)">
+        <div class="mom-head">
+          <div>
+            <div class="mom-title-text">Flobiz POS Billing — Customer Feature Review</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">Mar 12, 10:01 AM · Siddhartha Kumar</div>
+          </div>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="mom-body-text">
+          <strong>Key customer requests logged:</strong><br><br>
+          • GST visibility toggle — hide/show GST on invoices (MPOS customer-facing display)<br>
+          • Multi-invoice creation — view other invoices while creating new ones (technical constraint: drafts lost when switching tabs)<br>
+          • Thermal bill customization before printing — feature ready, rolling out to select customers, full rollout in 10 days–1 month<br>
+          • Local language item search — AI translation proposed as solution, bills stay in English<br>
+          • Easier stock management — demonstrated bulk GST editing & stock via purchase invoice<br><br>
+          <strong>Next steps:</strong> Dev team to review GST toggle + local language search. Follow-up call scheduled for My Bill Book improvements.
+        </div>
+      </div>
+
+      <div class="mom-card" onclick="toggleMOM(this)">
+        <div class="mom-head">
+          <div>
+            <div class="mom-title-text">Invoice Feature Details — Photography Business Billing</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">Mar 12, 9:46 AM · Siddhartha Kumar</div>
+          </div>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="mom-body-text">
+          No summary generated yet. Notes captured in Granola — open Granola to view transcript.
+        </div>
+      </div>
+
+      <div class="mom-card" onclick="toggleMOM(this)">
+        <div class="mom-head">
+          <div>
+            <div class="mom-title-text">🧋 Product Gupshup — Pre-read</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">Mar 12, 5:00 PM · Upcoming</div>
+          </div>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="mom-body-text">
+          Meeting is at 5 PM today. MOM will be auto-captured in Granola post-meeting.<br><br>
+          <strong>Suggested prep:</strong> Based on Slack activity, likely to discuss Cursor Automations, the ARPU brainstorming session name vote, and ongoing AI feature work (Purchase OCR).
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JIRA TASKS -->
+  <div class="section" id="jira">
+    <div class="section-header">
+      <div class="section-title">Jira tasks</div>
+      <div class="section-count">5 open · MyBillBook Product</div>
+    </div>
+    <div class="jira-list">
+      <div class="jira-row">
+        <div class="jira-key">MBBP-1413</div>
+        <div class="jira-title">Design (active subtask)</div>
+        <span class="jira-status status-progress">In Progress</span>
+        <a class="action-link" href="https://flobiz.atlassian.net/browse/MBBP-1413" target="_blank" style="font-size:10px">↗</a>
+      </div>
+      <div class="jira-row">
+        <div class="jira-key">MBBP-1264</div>
+        <div class="jira-title">Scan & record bills using Mira AI (Purchase OCR) — iOS DQA</div>
+        <span class="jira-status status-todo">To Do</span>
+        <a class="action-link" href="https://flobiz.atlassian.net/browse/MBBP-1264" target="_blank" style="font-size:10px">↗</a>
+      </div>
+      <div class="jira-row">
+        <div class="jira-key">MBBP-1407</div>
+        <div class="jira-title">Design (subtask)</div>
+        <span class="jira-status status-todo">To Do</span>
+        <a class="action-link" href="https://flobiz.atlassian.net/browse/MBBP-1407" target="_blank" style="font-size:10px">↗</a>
+      </div>
+      <div class="jira-row">
+        <div class="jira-key">MBBP-1376</div>
+        <div class="jira-title">Barcode Settings — DQA</div>
+        <span class="jira-status status-todo">To Do</span>
+        <a class="action-link" href="https://flobiz.atlassian.net/browse/MBBP-1376" target="_blank" style="font-size:10px">↗</a>
+      </div>
+      <div class="jira-row">
+        <div class="jira-key">MBBP-1327</div>
+        <div class="jira-title">Purchase OCR learning/mapping — DQA</div>
+        <span class="jira-status status-todo">To Do</span>
+        <a class="action-link" href="https://flobiz.atlassian.net/browse/MBBP-1327" target="_blank" style="font-size:10px">↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI FEED -->
+  <div class="section" id="ai-feed">
+    <div class="section-header">
+      <div class="section-title">AI & design feed</div>
+      <div class="section-count">Curated from Slack · #aiverse-at-flobiz</div>
+    </div>
+
+    <div class="highlight" style="border-color:rgba(123,206,200,0.2);background:linear-gradient(135deg, rgba(123,206,200,0.05), rgba(168,123,232,0.03))">
+      <div class="highlight-label" style="color:var(--accent2)">💡 Why this matters for you as a product designer learning AI</div>
+      <div class="highlight-text">The team is actively discussing Cursor Automations (Slack → auto PR generation), MCP value debates, AI cost reduction strategies, and the Sequoia "services as software" thesis. The latent.space "Reviews are dead" piece is particularly relevant — it reframes how AI should handle user feedback in product cycles. Computer use is improving fast.</div>
+    </div>
+
+    <div class="ai-feed">
+      <div class="ai-item">
+        <div class="ai-source">Gagan Lohia · #aiverse-at-flobiz · 11:09 AM today</div>
+        <div class="ai-text">Latest on OpenClaw — shared on X. Possibly related to AI agent capabilities worth tracking.</div>
+        <a class="ai-link" href="https://x.com/openclaw/status/2031965133405073823" target="_blank">↗ View tweet</a>
+      </div>
+      <div class="ai-item">
+        <div class="ai-source">Nishit Bhatt · #aiverse-at-flobiz · 10:12 AM today</div>
+        <div class="ai-text">YouTube video shared — AI/product deep dive, likely on new model capabilities or workflow automation.</div>
+        <a class="ai-link" href="https://www.youtube.com/watch?v=i1tZN41VKcE" target="_blank">↗ Watch on YouTube</a>
+      </div>
+      <div class="ai-item">
+        <div class="ai-source">Nishit Bhatt · #aiverse-at-flobiz · 10:11 AM today</div>
+        <div class="ai-text">latent.space — "Reviews are dead" — how AI is reshaping feedback and product review loops. Recommended reading for product designers.</div>
+        <a class="ai-link" href="https://www.latent.space/p/reviews-dead" target="_blank">↗ Read article</a>
+      </div>
+      <div class="ai-item">
+        <div class="ai-source">Rakesh Yadav · #aiverse-at-flobiz · 9:48 AM today</div>
+        <div class="ai-text">Skeptical take on MCP — "Is there any true benefit of MCP at all?" — thread worth reading before forming opinions on MCP integration.</div>
+        <a class="ai-link" href="https://x.com/dzhng/status/2029518820872945889" target="_blank">↗ View thread</a>
+      </div>
+      <div class="ai-item">
+        <div class="ai-source">Vaibhav Shrivastav · #aiverse-at-flobiz · Mar 6</div>
+        <div class="ai-text">Cursor Automations demo: Slack trigger → AI analyses issue + image → generates PR → you just review. "Wake up, review code, go back to sleep" workflow. Pros: fully customizable triggers. Cons: only high-token models, on-demand pricing.</div>
+        <a class="ai-link" href="https://flobiz.slack.com/archives/C08NQUX9CEQ" target="_blank">↗ Read full thread in Slack</a>
+      </div>
+      <div class="ai-item">
+        <div class="ai-source">Priyanka Jain · #aiverse-at-flobiz · Mar 10</div>
+        <div class="ai-text">LinkedIn: "I cut our AI costs by 80% — an embarrassingly simple fix" — practical cost-reduction strategies for AI-powered products.</div>
+        <a class="ai-link" href="https://www.linkedin.com/pulse/i-cut-our-ai-costs-80-fix-embarrassingly-simple-once-what-gaurav-glhkc" target="_blank">↗ Read on LinkedIn</a>
+      </div>
+      <div class="ai-item">
+        <div class="ai-source">Punit Goswami · #aiverse-at-flobiz · Mar 8</div>
+        <div class="ai-text">Sequoia Capital: "Services: the new software" — essential strategic read on how AI agents are transforming SaaS into services businesses. Directly relevant to FloBiz's direction.</div>
+        <a class="ai-link" href="https://sequoiacap.com/article/services-the-new-software/" target="_blank">↗ Read on Sequoia</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+function toggleDone(checkEl) {
+  const item = checkEl.closest('.action-item');
+  item.classList.toggle('done');
+}
+
+function filterActions(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const items = document.querySelectorAll('.action-item');
+  items.forEach(item => {
+    const src = item.dataset.source;
+    const pri = item.dataset.priority;
+    let show = true;
+    if (type === 'email' && src !== 'email') show = false;
+    if (type === 'slack' && src !== 'slack') show = false;
+    if (type === 'jira' && src !== 'jira') show = false;
+    if (type === 'high' && pri !== 'high') show = false;
+    item.style.display = show ? '' : 'none';
+  });
+}
+
+function toggleMOM(card) {
+  card.classList.toggle('expanded');
+  const body = card.querySelector('.mom-body-text');
+  body.classList.toggle('open');
+}
+
+// Animate items on load
+document.querySelectorAll('.action-item').forEach((el, i) => {
+  el.style.animationDelay = (i * 0.04) + 's';
+  el.style.animation = 'fadeUp 0.3s ease both';
+});
+
+// Active nav on scroll
+const sections = document.querySelectorAll('[id]');
+const navLinks = document.querySelectorAll('.nav-item[href^="#"]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(sec => {
+    if (window.scrollY >= sec.offsetTop - 80) current = sec.id;
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+  });
+}, { passive: true });
+</script>
+
+</body>
+</html>
