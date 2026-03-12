@@ -5,94 +5,127 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SK · Daily Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/*
+  Dyslexia-friendly design principles applied:
+  - Atkinson Hyperlegible font (designed for low-vision + dyslexia readers)
+  - 16px base font, user-adjustable
+  - 2.0 line height (extra breathing room between lines)
+  - Generous letter + word spacing
+  - NO italics anywhere
+  - Strong left alignment — no centered body text
+  - Priority shown as text label, never color alone
+  - Warm, low-contrast background (easier on the eyes than pure black)
+  - Consistent card structure throughout
+  - Large touch targets (min 44px)
+  - Reading ruler available
+*/
+
 :root {
-  --bg: #0d0d0f;
-  --surface: #161618;
-  --surface2: #1e1e21;
-  --border: rgba(255,255,255,0.07);
-  --border-hover: rgba(255,255,255,0.14);
-  --text: #f0ede8;
-  --muted: #7a7870;
+  --base-font-size: 16px;
+  --bg: #100e0c;
+  --surface: #1a1714;
+  --surface2: #221f1b;
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.18);
+  --text: #ede8e0;
+  --muted: #857e72;
   --accent: #e8c87a;
-  --accent-dim: rgba(232,200,122,0.12);
+  --accent-dim: rgba(232,200,122,0.13);
   --accent2: #7bcec8;
-  --accent2-dim: rgba(123,206,200,0.1);
-  --danger: #e87a7a;
-  --danger-dim: rgba(232,122,122,0.1);
+  --accent2-dim: rgba(123,206,200,0.11);
+  --danger: #e88a7a;
+  --danger-dim: rgba(232,138,122,0.12);
   --success: #7ac47a;
-  --success-dim: rgba(122,196,122,0.1);
-  --purple: #a87be8;
-  --purple-dim: rgba(168,123,232,0.1);
-  --r: 10px;
-  --r-lg: 16px;
+  --success-dim: rgba(122,196,122,0.11);
+  --purple: #b08ae8;
+  --purple-dim: rgba(176,138,232,0.11);
+  --r: 12px;
+  --r-lg: 18px;
+  --line-height: 2.0;
+  --letter-spacing: 0.03em;
+  --word-spacing: 0.08em;
 }
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
+  font-family: 'Atkinson Hyperlegible', sans-serif;
+  font-size: var(--base-font-size);
+  line-height: var(--line-height);
+  letter-spacing: var(--letter-spacing);
+  word-spacing: var(--word-spacing);
   min-height: 100vh;
   overflow-x: hidden;
+  text-align: left;
 }
-body::before {
-  content: '';
+
+/* No italics — replaced throughout */
+em, i { font-style: normal; font-weight: 700; color: var(--accent); }
+
+/* Strong focus ring for keyboard nav */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Reading Ruler */
+#readingRuler {
   position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  opacity: 0.4;
+  left: 0; right: 0;
+  height: 52px;
+  background: rgba(232,200,122,0.07);
+  border-top: 2px solid rgba(232,200,122,0.25);
+  border-bottom: 2px solid rgba(232,200,122,0.25);
   pointer-events: none;
-  z-index: 1000;
+  z-index: 9999;
+  display: none;
 }
 
 /* Refresh Banner */
 .refresh-banner {
   display: none;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: linear-gradient(90deg, rgba(232,200,122,0.15), rgba(123,206,200,0.1));
-  border-bottom: 1px solid rgba(232,200,122,0.3);
-  padding: 10px 36px;
-  display: none;
   align-items: center;
-  gap: 12px;
-  font-size: 13px;
+  gap: 14px;
+  padding: 12px 36px;
+  background: linear-gradient(90deg, rgba(232,200,122,0.13), rgba(123,206,200,0.08));
+  border-bottom: 1px solid rgba(232,200,122,0.3);
+  font-size: 15px;
 }
 .refresh-banner.visible { display: flex; }
-.refresh-banner-text { flex: 1; color: var(--accent); }
+.refresh-banner-text { flex: 1; color: var(--accent); font-weight: 700; }
 .refresh-banner-btn {
-  padding: 5px 14px;
+  padding: 7px 18px;
   background: var(--accent);
-  color: #0d0d0f;
+  color: #100e0c;
   border: none;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
-  font-family: 'DM Mono', monospace;
+  font-family: inherit;
+  letter-spacing: 0.02em;
+  min-height: 36px;
 }
 .refresh-banner-dismiss {
-  background: none;
-  border: none;
-  color: var(--muted);
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0 4px;
+  background: none; border: none; color: var(--muted);
+  cursor: pointer; font-size: 20px; padding: 0 6px; min-height: 36px;
+  display: flex; align-items: center;
 }
 
 /* Layout */
 .shell {
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 240px 1fr;
   min-height: 100vh;
 }
 
-/* Sidebar */
+/* ── SIDEBAR ───────────────────────────────────── */
 nav {
   position: sticky;
   top: 0;
@@ -103,37 +136,41 @@ nav {
   border-right: 1px solid var(--border);
   background: var(--surface);
   overflow-y: auto;
+  gap: 2px;
 }
 .logo {
-  font-family: 'DM Serif Display', serif;
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: 700;
   color: var(--accent);
-  margin-bottom: 4px;
-  letter-spacing: -0.02em;
+  margin-bottom: 2px;
+  letter-spacing: 0.01em;
 }
 .logo-sub {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
   font-family: 'DM Mono', monospace;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+  letter-spacing: 0.06em;
 }
 .nav-section {
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   color: var(--muted);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin-bottom: 8px;
-  margin-top: 20px;
+  margin-bottom: 6px;
+  margin-top: 18px;
+  padding-left: 12px;
 }
 .nav-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 9px 12px;
-  border-radius: 8px;
+  padding: 10px 14px;
+  border-radius: var(--r);
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
+  font-weight: 400;
   color: var(--muted);
   transition: all 0.15s;
   margin-bottom: 2px;
@@ -142,251 +179,289 @@ nav {
   width: 100%;
   text-align: left;
   text-decoration: none;
+  min-height: 44px;
+  font-family: inherit;
+  letter-spacing: var(--letter-spacing);
 }
 .nav-item:hover { background: var(--surface2); color: var(--text); }
-.nav-item.active { background: var(--accent-dim); color: var(--accent); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); font-weight: 700; }
 .nav-dot {
-  width: 7px; height: 7px;
+  width: 8px; height: 8px;
   border-radius: 50%;
   background: currentColor;
   flex-shrink: 0;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 .nav-badge {
   margin-left: auto;
   background: var(--danger);
-  color: #000;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 1px 6px;
-  border-radius: 20px;
-  min-width: 18px;
+  color: #100e0c;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 24px;
+  min-width: 22px;
   text-align: center;
 }
-.date-chip {
-  margin-top: auto;
-  padding: 12px;
+
+/* Accessibility toolbar in sidebar */
+.a11y-toolbar {
+  margin-top: 12px;
+  padding: 14px;
   background: var(--surface2);
   border-radius: var(--r);
   border: 1px solid var(--border);
 }
-.date-chip .day {
-  font-family: 'DM Serif Display', serif;
-  font-size: 28px;
-  color: var(--text);
-  line-height: 1;
-}
-.date-chip .full {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 3px;
+.a11y-label {
+  font-size: 10px;
   font-family: 'DM Mono', monospace;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.a11y-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.a11y-row:last-child { margin-bottom: 0; }
+.a11y-row-label {
+  font-size: 12px;
+  color: var(--muted);
+  min-width: 50px;
+  font-family: 'DM Mono', monospace;
+}
+.a11y-btn {
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 32px;
+  min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.a11y-btn:hover { border-color: var(--accent); color: var(--accent); }
+.a11y-btn.active { background: var(--accent-dim); border-color: rgba(232,200,122,0.4); color: var(--accent); }
+.font-size-display {
+  font-size: 12px;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  min-width: 32px;
+  text-align: center;
+}
+
+.date-chip {
+  margin-top: auto;
+  padding: 14px;
+  background: var(--surface2);
+  border-radius: var(--r);
+  border: 1px solid var(--border);
 }
 .date-chip .clock {
   font-family: 'DM Mono', monospace;
-  font-size: 18px;
+  font-size: 22px;
   color: var(--accent);
-  margin-top: 6px;
   letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+.date-chip .day {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  margin-top: 4px;
+}
+.date-chip .full {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.08em;
 }
 
-/* Main */
+/* ── MAIN ──────────────────────────────────────── */
 main { overflow-y: auto; }
 
 /* Header */
 .header {
-  padding: 32px 36px 0;
+  padding: 36px 40px 0;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
   flex-wrap: wrap;
 }
-.header-left {}
 .header-greeting {
-  font-family: 'DM Serif Display', serif;
-  font-size: 32px;
+  font-size: 34px;
+  font-weight: 700;
   color: var(--text);
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
 }
-.header-greeting em {
-  font-style: italic;
-  color: var(--accent);
-}
-.header-meta { font-size: 13px; color: var(--muted); margin-top: 4px; }
-.header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; padding-top: 4px; }
+.header-greeting span.name { color: var(--accent); }
+.header-meta { font-size: 15px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+.header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; padding-top: 4px; }
 .header-tags { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: flex-end; }
 .tag {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 500;
-  border: 1px solid;
-  font-family: 'DM Mono', monospace;
+  padding: 5px 12px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 2px solid;
 }
-.tag-amber { color: var(--accent); border-color: rgba(232,200,122,0.3); background: var(--accent-dim); }
-.tag-teal { color: var(--accent2); border-color: rgba(123,206,200,0.3); background: var(--accent2-dim); }
-.tag-red { color: var(--danger); border-color: rgba(232,122,122,0.3); background: var(--danger-dim); }
-.tag-purple { color: var(--purple); border-color: rgba(168,123,232,0.3); background: var(--purple-dim); }
+.tag-amber { color: var(--accent); border-color: rgba(232,200,122,0.35); background: var(--accent-dim); }
+.tag-teal { color: var(--accent2); border-color: rgba(123,206,200,0.35); background: var(--accent2-dim); }
+.tag-red { color: var(--danger); border-color: rgba(232,138,122,0.35); background: var(--danger-dim); }
+.tag-purple { color: var(--purple); border-color: rgba(176,138,232,0.35); background: var(--purple-dim); }
 
 /* Refresh controls */
-.refresh-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.refresh-row { display: flex; align-items: center; gap: 10px; }
 .refresh-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 16px;
   background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
   color: var(--muted);
-  font-size: 11px;
-  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.15s;
+  min-height: 38px;
+  letter-spacing: 0.02em;
 }
 .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
-.refresh-btn .spin { display: inline-block; transition: transform 0.4s; }
-.refresh-btn:active .spin { transform: rotate(360deg); }
-.last-updated {
-  font-size: 10px;
-  color: var(--muted);
-  font-family: 'DM Mono', monospace;
-}
+.last-updated { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
 
 /* Sections */
-.section { padding: 28px 36px; }
+.section { padding: 32px 40px; }
 .section + .section { border-top: 1px solid var(--border); }
 .section-header {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-bottom: 18px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
 }
 .section-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: 700;
   color: var(--text);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 .section-count {
   font-family: 'DM Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
+  padding: 3px 10px;
+  background: var(--surface2);
+  border-radius: 20px;
 }
 
 /* Metrics row */
 .metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 12px;
-  padding: 24px 36px;
+  padding: 24px 40px;
   border-bottom: 1px solid var(--border);
 }
 .metric {
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--r);
-  padding: 16px;
+  padding: 18px 16px;
   transition: border-color 0.2s;
 }
 .metric:hover { border-color: var(--border-hover); }
 .metric-val {
-  font-family: 'DM Serif Display', serif;
-  font-size: 30px;
+  font-size: 34px;
+  font-weight: 700;
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
-.metric-label { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
+.metric-label { font-size: 13px; color: var(--muted); }
 
 /* Progress bar */
-.progress-section {
-  margin-bottom: 20px;
-}
+.progress-section { margin-bottom: 22px; }
 .progress-label-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 7px;
+  margin-bottom: 8px;
 }
-.progress-label {
-  font-size: 11px;
-  color: var(--muted);
-  font-family: 'DM Mono', monospace;
-}
-.progress-pct {
-  font-size: 11px;
-  color: var(--success);
-  font-family: 'DM Mono', monospace;
-  font-weight: 500;
-}
+.progress-label { font-size: 14px; color: var(--muted); font-weight: 700; }
+.progress-pct { font-size: 14px; color: var(--success); font-family: 'DM Mono', monospace; font-weight: 700; }
 .progress-track {
-  height: 5px;
+  height: 8px;
   background: var(--surface2);
-  border-radius: 4px;
+  border-radius: 6px;
   overflow: hidden;
 }
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--success), var(--accent2));
-  border-radius: 4px;
+  border-radius: 6px;
   transition: width 0.5s ease;
 }
 
-/* Actionables */
-.action-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+/* ── ACTION ITEMS ────────────────────────────── */
+.action-grid { display: flex; flex-direction: column; gap: 10px; }
+
 .action-item {
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--r);
-  transition: all 0.15s;
+  transition: border-color 0.15s;
   position: relative;
-  overflow: hidden;
 }
-.action-item::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 3px;
-}
-.action-item.priority-high::before { background: var(--danger); }
-.action-item.priority-med::before { background: var(--accent); }
-.action-item.priority-low::before { background: var(--muted); }
 .action-item:hover { border-color: var(--border-hover); }
-.action-item.done { opacity: 0.55; }
+.action-item.done { opacity: 0.5; }
 .action-item.done .action-title { text-decoration: line-through; color: var(--muted); }
 
-/* Action top row */
+/* Priority stripe + label */
+.priority-stripe {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  border-radius: var(--r) 0 0 var(--r);
+}
+.priority-high .priority-stripe { background: var(--danger); }
+.priority-med .priority-stripe { background: var(--accent); }
+.priority-low .priority-stripe { background: var(--muted); }
+
 .action-top {
   display: flex;
   align-items: flex-start;
   gap: 14px;
-  padding: 14px 16px;
-  cursor: pointer;
+  padding: 16px 18px 16px 22px;
 }
+
 .action-check {
-  width: 18px; height: 18px;
-  border-radius: 5px;
-  border: 1.5px solid var(--border-hover);
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--border-hover);
   flex-shrink: 0;
-  margin-top: 1px;
+  margin-top: 2px;
   cursor: pointer;
   transition: all 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: transparent;
 }
 .action-check:hover { border-color: var(--accent); }
 .action-item.done .action-check {
@@ -395,80 +470,109 @@ main { overflow-y: auto; }
 }
 .action-item.done .action-check::after {
   content: '✓';
-  font-size: 11px;
+  font-size: 13px;
   color: var(--success);
-  font-weight: 600;
+  font-weight: 700;
 }
+
 .action-body { flex: 1; min-width: 0; }
+
 .action-title-row {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 4px;
+  gap: 12px;
+  margin-bottom: 8px;
 }
-.action-title { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; }
+.action-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.6;
+  flex: 1;
+}
+
 .toggle-detail-btn {
-  background: none;
-  border: 1px solid var(--border);
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
   color: var(--muted);
-  font-size: 10px;
-  font-family: 'DM Mono', monospace;
-  padding: 2px 8px;
-  border-radius: 20px;
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 24px;
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
   transition: all 0.15s;
-  margin-top: 1px;
+  min-height: 32px;
+  letter-spacing: 0.02em;
 }
 .toggle-detail-btn:hover, .toggle-detail-btn.open {
   border-color: var(--accent2);
   color: var(--accent2);
+  background: var(--accent2-dim);
 }
-.action-meta { font-size: 11px; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+.action-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Priority badge — text label, not color alone */
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-family: 'DM Mono', monospace;
+}
+.pb-high { background: var(--danger-dim); color: var(--danger); border: 1px solid rgba(232,138,122,0.3); }
+.pb-med { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(232,200,122,0.3); }
+.pb-low { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+
 .action-source {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 7px;
+  gap: 5px;
+  padding: 3px 9px;
   border-radius: 20px;
-  font-size: 10px;
+  font-size: 11px;
   font-family: 'DM Mono', monospace;
-  font-weight: 500;
+  font-weight: 700;
   border: 1px solid;
 }
 .src-email { color: #c8a87b; border-color: rgba(200,168,123,0.3); background: rgba(200,168,123,0.08); }
 .src-slack { color: #7b9ee8; border-color: rgba(123,158,232,0.3); background: rgba(123,158,232,0.08); }
-.src-jira { color: var(--purple); border-color: rgba(168,123,232,0.3); background: var(--purple-dim); }
-.priority-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  margin-top: 5px;
-}
-.p-high { background: var(--danger); }
-.p-med { background: var(--accent); }
-.p-low { background: var(--muted); }
+.src-jira { color: var(--purple); border-color: rgba(176,138,232,0.3); background: var(--purple-dim); }
 
 /* Detail panel */
 .detail-panel {
   display: none;
-  padding: 0 16px 14px 48px;
+  padding: 0 18px 18px 22px;
   border-top: 1px solid var(--border);
-  margin-top: 0;
 }
-.detail-panel.open { display: block; padding-top: 14px; }
+.detail-panel.open { display: block; padding-top: 18px; }
 
-.detail-block { margin-bottom: 14px; }
+.detail-block { margin-bottom: 18px; }
 .detail-block:last-child { margin-bottom: 0; }
 .detail-block-label {
-  font-size: 10px;
+  font-size: 11px;
   font-family: 'DM Mono', monospace;
   color: var(--muted);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  font-weight: 700;
 }
 
 .steps-list {
@@ -476,53 +580,55 @@ main { overflow-y: auto; }
   counter-reset: step-counter;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 10px;
 }
 .steps-list li {
   counter-increment: step-counter;
   display: flex;
-  gap: 10px;
-  font-size: 12px;
+  gap: 12px;
+  font-size: 14px;
   color: var(--text);
-  line-height: 1.5;
+  line-height: 1.7;
   align-items: flex-start;
 }
 .steps-list li::before {
   content: counter(step-counter);
-  min-width: 20px;
-  height: 20px;
+  min-width: 24px;
+  height: 24px;
   background: var(--surface2);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border-hover);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 11px;
   font-family: 'DM Mono', monospace;
-  color: var(--muted);
+  font-weight: 700;
+  color: var(--accent);
   flex-shrink: 0;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .ai-box {
-  background: linear-gradient(135deg, rgba(123,206,200,0.07), rgba(168,123,232,0.05));
-  border: 1px solid rgba(123,206,200,0.2);
-  border-radius: 8px;
-  padding: 10px 14px;
+  background: linear-gradient(135deg, rgba(123,206,200,0.07), rgba(176,138,232,0.05));
+  border: 1.5px solid rgba(123,206,200,0.22);
+  border-radius: var(--r);
+  padding: 14px 16px;
 }
 .ai-box-label {
-  font-size: 10px;
+  font-size: 11px;
   font-family: 'DM Mono', monospace;
   color: var(--accent2);
-  letter-spacing: 0.06em;
-  margin-bottom: 6px;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  font-weight: 700;
 }
 .ai-box-text {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.75;
 }
-.ai-box-text strong { color: var(--accent2); font-weight: 500; }
+.ai-box-text strong { color: var(--accent2); font-weight: 700; }
 
 .detail-links-row {
   display: flex;
@@ -533,177 +639,190 @@ main { overflow-y: auto; }
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-family: 'DM Mono', monospace;
-  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 700;
+  border: 1.5px solid var(--border-hover);
   background: var(--surface2);
   color: var(--muted);
   text-decoration: none;
   transition: all 0.15s;
   cursor: pointer;
+  min-height: 36px;
+  letter-spacing: 0.01em;
 }
-.detail-link:hover { border-color: var(--accent2); color: var(--accent2); }
-.detail-link.primary { border-color: rgba(232,200,122,0.3); color: var(--accent); background: var(--accent-dim); }
+.detail-link:hover { border-color: var(--accent2); color: var(--accent2); background: var(--accent2-dim); }
+.detail-link.primary { border-color: rgba(232,200,122,0.4); color: var(--accent); background: var(--accent-dim); }
 .detail-link.primary:hover { border-color: var(--accent); }
 
-/* Meetings */
-.meeting-list { display: flex; flex-direction: column; gap: 8px; }
+/* ── MEETINGS ───────────────────────────────── */
+.meeting-list { display: flex; flex-direction: column; gap: 10px; }
 .meeting-card {
   display: flex;
-  gap: 16px;
-  padding: 14px 16px;
+  gap: 18px;
+  padding: 16px 18px;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--r);
   align-items: flex-start;
 }
 .meeting-time {
   font-family: 'DM Mono', monospace;
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 700;
   color: var(--accent);
-  min-width: 60px;
+  min-width: 68px;
   padding-top: 2px;
 }
 .meeting-info { flex: 1; }
-.meeting-title { font-size: 13px; font-weight: 500; }
-.meeting-meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
-.meeting-countdown { font-size: 11px; color: var(--accent2); font-family: 'DM Mono', monospace; margin-top: 4px; }
+.meeting-title { font-size: 15px; font-weight: 700; }
+.meeting-meta { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+.meeting-countdown { font-size: 13px; color: var(--accent2); font-family: 'DM Mono', monospace; margin-top: 5px; font-weight: 700; }
 .meeting-badge {
-  padding: 3px 8px;
-  border-radius: 20px;
-  font-size: 10px;
-  font-weight: 600;
-  font-family: 'DM Mono', monospace;
+  padding: 5px 12px;
+  border-radius: 24px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
 }
-.badge-live { background: rgba(232,122,122,0.2); color: var(--danger); border: 1px solid rgba(232,122,122,0.3); }
-.badge-done { background: var(--success-dim); color: var(--success); border: 1px solid rgba(122,196,122,0.3); }
-.badge-upcoming { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(232,200,122,0.3); }
+.badge-live { background: rgba(232,138,122,0.2); color: var(--danger); border: 1.5px solid rgba(232,138,122,0.3); }
+.badge-done { background: var(--success-dim); color: var(--success); border: 1.5px solid rgba(122,196,122,0.3); }
+.badge-upcoming { background: var(--accent-dim); color: var(--accent); border: 1.5px solid rgba(232,200,122,0.3); }
 
-/* MOM */
+/* ── MOM ────────────────────────────────────── */
 .mom-list { display: flex; flex-direction: column; gap: 10px; }
 .mom-card {
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--r);
   overflow: hidden;
 }
 .mom-head {
-  padding: 12px 16px;
+  padding: 14px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  gap: 10px;
+  gap: 12px;
+  min-height: 56px;
 }
 .mom-head:hover { background: var(--surface2); }
-.mom-title-text { font-size: 13px; font-weight: 500; }
+.mom-title-text { font-size: 15px; font-weight: 700; line-height: 1.5; }
 .mom-body-text {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
-  line-height: 1.7;
-  padding: 0 16px 16px;
+  line-height: 1.9;
+  padding: 0 18px 18px;
   border-top: 1px solid var(--border);
   display: none;
 }
-.mom-body-text.open { display: block; padding-top: 12px; }
-.mom-body-text strong { color: var(--text); font-weight: 500; }
-.chevron { color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+.mom-body-text.open { display: block; padding-top: 14px; }
+.mom-body-text strong { color: var(--text); font-weight: 700; }
+.chevron { color: var(--muted); font-size: 14px; transition: transform 0.2s; flex-shrink: 0; }
 .mom-card.expanded .chevron { transform: rotate(180deg); }
 
-/* AI Feed */
-.ai-feed { display: flex; flex-direction: column; gap: 8px; }
+/* ── AI FEED ────────────────────────────────── */
+.ai-feed { display: flex; flex-direction: column; gap: 10px; }
 .ai-item {
-  padding: 12px 14px;
+  padding: 14px 16px;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--r);
   transition: border-color 0.15s;
 }
 .ai-item:hover { border-color: var(--border-hover); }
-.ai-source {
-  font-size: 10px;
-  color: var(--muted);
-  font-family: 'DM Mono', monospace;
-  margin-bottom: 5px;
-}
-.ai-text { font-size: 13px; color: var(--text); line-height: 1.5; margin-bottom: 6px; }
+.ai-source { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; margin-bottom: 6px; }
+.ai-text { font-size: 14px; color: var(--text); line-height: 1.75; margin-bottom: 8px; }
 .ai-link {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--accent2);
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
   font-family: 'DM Mono', monospace;
+  font-weight: 700;
 }
-.ai-link:hover { text-decoration: underline; }
+.ai-link:hover { color: var(--accent); }
 
-/* Jira */
-.jira-list { display: flex; flex-direction: column; gap: 7px; }
+/* ── JIRA ───────────────────────────────────── */
+.jira-list { display: flex; flex-direction: column; gap: 8px; }
 .jira-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 11px 14px;
+  gap: 14px;
+  padding: 14px 16px;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--r);
+  min-height: 52px;
 }
 .jira-key {
   font-family: 'DM Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 700;
   color: var(--muted);
-  min-width: 90px;
+  min-width: 96px;
 }
-.jira-title { font-size: 13px; color: var(--text); flex: 1; }
+.jira-title { font-size: 14px; color: var(--text); flex: 1; line-height: 1.5; }
 .jira-status {
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: 20px;
-  font-size: 10px;
+  font-size: 11px;
   font-family: 'DM Mono', monospace;
+  font-weight: 700;
   flex-shrink: 0;
 }
 .status-progress { background: var(--accent-dim); color: var(--accent); }
 .status-todo { background: var(--surface2); color: var(--muted); }
 
-/* Filter bar */
-.filter-bar {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
+/* ── FILTER BAR ─────────────────────────────── */
+.filter-bar { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
 .filter-btn {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-family: 'DM Mono', monospace;
+  padding: 7px 14px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 700;
   cursor: pointer;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   background: var(--surface2);
   color: var(--muted);
   transition: all 0.15s;
+  min-height: 36px;
+  letter-spacing: 0.02em;
 }
 .filter-btn:hover, .filter-btn.active {
   background: var(--accent-dim);
-  border-color: rgba(232,200,122,0.4);
+  border-color: rgba(232,200,122,0.45);
   color: var(--accent);
 }
 
-/* Highlight box */
+/* ── HIGHLIGHT BOX ──────────────────────────── */
 .highlight {
   background: linear-gradient(135deg, rgba(232,200,122,0.06), rgba(123,206,200,0.04));
-  border: 1px solid rgba(232,200,122,0.2);
+  border: 1.5px solid rgba(232,200,122,0.22);
   border-radius: var(--r-lg);
-  padding: 18px 20px;
-  margin-bottom: 20px;
+  padding: 20px 22px;
+  margin-bottom: 22px;
 }
-.highlight-label { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 6px; }
-.highlight-text { font-size: 13px; color: var(--text); line-height: 1.6; }
+.highlight-label {
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.highlight-text { font-size: 14px; color: var(--text); line-height: 1.85; }
 
 #actionables, #meetings, #moms, #jira, #ai-feed { scroll-margin-top: 20px; }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .section, .metrics { animation: fadeUp 0.3s ease both; }
@@ -714,17 +833,17 @@ main { overflow-y: auto; }
 .section:nth-child(6) { animation-delay: 0.25s; }
 .section:nth-child(7) { animation-delay: 0.3s; }
 
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 .pulse { animation: pulse 2s infinite; }
 
-::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
 
-@media (max-width: 700px) {
+@media (max-width: 760px) {
   .shell { grid-template-columns: 1fr; }
   nav { position: relative; height: auto; flex-direction: row; flex-wrap: wrap; gap: 4px; padding: 16px; }
-  .date-chip, .nav-section { display: none; }
+  .date-chip, .nav-section, .a11y-toolbar { display: none; }
   .section, .metrics, .header { padding-left: 20px; padding-right: 20px; }
   .detail-panel { padding-left: 16px; }
 }
@@ -732,11 +851,14 @@ main { overflow-y: auto; }
 </head>
 <body>
 
+<!-- Reading Ruler element -->
+<div id="readingRuler"></div>
+
 <!-- Auto-refresh banner -->
 <div class="refresh-banner" id="refreshBanner">
-  <span class="refresh-banner-text">⚡ It's 11 AM — time to refresh your daily digest with the latest updates.</span>
-  <button class="refresh-banner-btn" onclick="refreshDashboard()">↻ Refresh now</button>
-  <button class="refresh-banner-dismiss" onclick="dismissBanner()">✕</button>
+  <span class="refresh-banner-text">It is 11 AM — refresh your dashboard to get today's latest updates.</span>
+  <button class="refresh-banner-btn" onclick="refreshDashboard()">Refresh now</button>
+  <button class="refresh-banner-dismiss" onclick="dismissBanner()" aria-label="Dismiss">✕</button>
 </div>
 
 <div class="shell">
@@ -766,6 +888,25 @@ main { overflow-y: auto; }
     <div class="nav-dot"></div> AI feed
   </a>
 
+  <!-- Accessibility toolbar -->
+  <div class="a11y-toolbar">
+    <div class="a11y-label">Accessibility</div>
+    <div class="a11y-row">
+      <span class="a11y-row-label">Text</span>
+      <button class="a11y-btn" onclick="changeFontSize(-1)" aria-label="Decrease font size" title="Smaller text">A−</button>
+      <span class="font-size-display" id="fontSizeDisplay">16</span>
+      <button class="a11y-btn" onclick="changeFontSize(1)" aria-label="Increase font size" title="Larger text">A+</button>
+    </div>
+    <div class="a11y-row">
+      <span class="a11y-row-label">Ruler</span>
+      <button class="a11y-btn" id="rulerBtn" onclick="toggleRuler()" title="Reading ruler — follows your mouse to help track lines">Guide</button>
+    </div>
+    <div class="a11y-row">
+      <span class="a11y-row-label">Spacing</span>
+      <button class="a11y-btn" id="spacingBtn" onclick="toggleSpacing()" title="Extra spacing between lines and letters">Wide</button>
+    </div>
+  </div>
+
   <div class="date-chip">
     <div class="clock" id="liveClock">--:--</div>
     <div class="day" id="liveDay">--</div>
@@ -776,11 +917,10 @@ main { overflow-y: auto; }
 <!-- MAIN -->
 <main>
 
-  <!-- Header -->
   <div class="header">
-    <div class="header-left">
-      <div class="header-greeting" id="greeting">Good morning,<br><em>Siddhartha.</em></div>
-      <div class="header-meta">siddhartha.kumar@flobiz.in · Bengaluru</div>
+    <div>
+      <div class="header-greeting" id="greeting">Good morning, <span class="name">Siddhartha.</span></div>
+      <div class="header-meta">siddhartha.kumar@flobiz.in &nbsp;·&nbsp; Bengaluru</div>
     </div>
     <div class="header-right">
       <div class="header-tags">
@@ -790,9 +930,7 @@ main { overflow-y: auto; }
         <span class="tag tag-teal">7 AI links</span>
       </div>
       <div class="refresh-row">
-        <button class="refresh-btn" onclick="refreshDashboard()">
-          <span class="spin">↻</span> Refresh
-        </button>
+        <button class="refresh-btn" onclick="refreshDashboard()">↻ &nbsp;Refresh</button>
         <span class="last-updated" id="lastUpdated">Checking...</span>
       </div>
     </div>
@@ -802,23 +940,23 @@ main { overflow-y: auto; }
   <div class="metrics">
     <div class="metric">
       <div class="metric-val" style="color:var(--danger)">3</div>
-      <div class="metric-label">🔴 high priority</div>
+      <div class="metric-label">High priority</div>
     </div>
     <div class="metric">
       <div class="metric-val" style="color:var(--accent)">6</div>
-      <div class="metric-label">🟡 medium priority</div>
+      <div class="metric-label">Medium priority</div>
     </div>
     <div class="metric">
       <div class="metric-val" style="color:var(--accent2)">2</div>
-      <div class="metric-label">📅 meetings today</div>
+      <div class="metric-label">Meetings today</div>
     </div>
     <div class="metric">
       <div class="metric-val" style="color:var(--purple)">5</div>
-      <div class="metric-label">🎯 open Jira tasks</div>
+      <div class="metric-label">Open Jira tasks</div>
     </div>
     <div class="metric">
-      <div class="metric-val" style="color: #c8a87b">201</div>
-      <div class="metric-label">📬 unread emails</div>
+      <div class="metric-val" style="color:#c8a87b">201</div>
+      <div class="metric-label">Unread emails</div>
     </div>
   </div>
 
@@ -826,15 +964,14 @@ main { overflow-y: auto; }
   <div class="section" id="actionables">
     <div class="section-header">
       <div class="section-title">All actionables</div>
-      <div class="section-count">9 items across Email · Slack · Jira</div>
+      <span class="section-count">9 items — Email · Slack · Jira</span>
     </div>
 
     <div class="highlight">
-      <div class="highlight-label">⚡ Today's focus</div>
-      <div class="highlight-text">You have 3 high-priority items: Performance self-review (deadline unclear), Shubhi's peer review, and the Modal redesign review with Rohit. Also a Figma comment from Adarsh waiting on your response. Start with the reviews — they're HR deadlines.</div>
+      <div class="highlight-label">Today's focus</div>
+      <div class="highlight-text">You have 3 high-priority items: Performance self-review, Shubhi peer review, and the Modal redesign call with Rohit. Start with the reviews — they are HR deadlines. A Figma comment from Adarsh is also waiting.</div>
     </div>
 
-    <!-- Progress bar -->
     <div class="progress-section">
       <div class="progress-label-row">
         <span class="progress-label" id="progressLabel">0 of 9 done</span>
@@ -850,23 +987,24 @@ main { overflow-y: auto; }
       <button class="filter-btn" onclick="filterActions('email', this)">Email</button>
       <button class="filter-btn" onclick="filterActions('slack', this)">Slack</button>
       <button class="filter-btn" onclick="filterActions('jira', this)">Jira</button>
-      <button class="filter-btn" onclick="filterActions('high', this)">High priority</button>
+      <button class="filter-btn" onclick="filterActions('high', this)">High priority only</button>
     </div>
 
     <div class="action-grid" id="action-list">
 
-      <!-- 1. PERFORMANCE SELF-REVIEW -->
+      <!-- 1 -->
       <div class="action-item priority-high" data-source="email" data-priority="high" data-id="task-1">
+        <div class="priority-stripe"></div>
         <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)"></div>
-          <div class="priority-dot p-high"></div>
+          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
           <div class="action-body">
             <div class="action-title-row">
               <div class="action-title">Submit Performance Self-Review — FY25-26 March 2026</div>
               <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
             </div>
             <div class="action-meta">
-              <span class="action-source src-email">📧 Email · Valorem/Keka</span>
+              <span class="priority-badge pb-high">High priority</span>
+              <span class="action-source src-email">Email · Valorem/Keka</span>
               <span>Reminded twice today · HR deadline</span>
             </div>
           </div>
@@ -875,43 +1013,44 @@ main { overflow-y: auto; }
           <div class="detail-block">
             <div class="detail-block-label">Steps to complete</div>
             <ol class="steps-list">
-              <li>Open Keka HR portal via the email link below</li>
-              <li>Go to Performance → Self Review → FY25-26 March 2026</li>
+              <li>Open Keka HR portal using the email link below</li>
+              <li>Go to: Performance &rarr; Self Review &rarr; FY25-26 March 2026</li>
               <li>Fill each section: Goals achieved, Key contributions, Areas of growth</li>
-              <li>Reference your Jira work (Purchase OCR DQA, Barcode Settings, MBBP-1413) as specific examples</li>
+              <li>Reference your Jira work (Purchase OCR, Barcode Settings, MBBP-1413) as examples</li>
               <li>Mention cross-functional work: Figma reviews, customer calls, P&D standups</li>
-              <li>Submit — allow 2 mins for confirmation email</li>
+              <li>Submit — you will get a confirmation email</li>
             </ol>
           </div>
           <div class="detail-block">
             <div class="ai-box">
-              <div class="ai-box-label">🤖 AI shortcut — save 30 mins</div>
-              <div class="ai-box-text">Open Claude and paste: <strong>"I'm a product designer at a fintech. Help me write a concise self-review for FY25-26. Key work: UX design for mobile billing app, DQA on Purchase OCR + Barcode features, customer call research (Flobiz POS, Photography billing), Figma exploration designs (Web 2026), cross-functional collaboration with PMs and engineers. Format it as bullets for a Keka HR portal."</strong> Claude will draft all sections in under 2 minutes.</div>
+              <div class="ai-box-label">AI shortcut — saves 30 minutes</div>
+              <div class="ai-box-text">Open Claude and paste: <strong>"I am a product designer at a fintech. Help me write a self-review for FY25-26. My work includes: UX design for mobile billing app, DQA on Purchase OCR and Barcode features, customer call research, Figma exploration designs, and cross-functional team collaboration. Format it as bullet points for a Keka HR portal."</strong></div>
             </div>
           </div>
           <div class="detail-block">
-            <div class="detail-block-label">Quick links</div>
+            <div class="detail-block-label">All links</div>
             <div class="detail-links-row">
-              <a class="detail-link primary" href="https://mail.google.com/mail/u/0/#inbox/19ce0a57597c149d" target="_blank">↗ Open reminder email</a>
-              <a class="detail-link" href="https://flobiz.keka.com" target="_blank">↗ Keka HR portal</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">↗ Open Claude</a>
+              <a class="detail-link primary" href="https://mail.google.com/mail/u/0/#inbox/19ce0a57597c149d" target="_blank">Open reminder email</a>
+              <a class="detail-link" href="https://flobiz.keka.com" target="_blank">Keka HR portal</a>
+              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 2. PEER REVIEW SHUBHI -->
+      <!-- 2 -->
       <div class="action-item priority-high" data-source="email" data-priority="high" data-id="task-2">
+        <div class="priority-stripe"></div>
         <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)"></div>
-          <div class="priority-dot p-high"></div>
+          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
           <div class="action-body">
             <div class="action-title-row">
               <div class="action-title">Submit peer review for Shubhi Goel — Performance Review FY25-26</div>
               <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
             </div>
             <div class="action-meta">
-              <span class="action-source src-email">📧 Email · Valorem/Keka</span>
+              <span class="priority-badge pb-high">High priority</span>
+              <span class="action-source src-email">Email · Valorem/Keka</span>
               <span>Pending your action · HR deadline</span>
             </div>
           </div>
@@ -920,43 +1059,44 @@ main { overflow-y: auto; }
           <div class="detail-block">
             <div class="detail-block-label">Steps to complete</div>
             <ol class="steps-list">
-              <li>Open the peer review email to access the Keka form link</li>
-              <li>Think of 2-3 specific things Shubhi does well (collaboration, delivery, communication)</li>
-              <li>Think of 1 constructive area of growth (keep it professional and actionable)</li>
+              <li>Open the peer review email to get the Keka form link</li>
+              <li>Think of 2 to 3 specific things Shubhi does well</li>
+              <li>Think of 1 constructive area of growth — keep it professional</li>
               <li>Rate the required dimensions on the form</li>
-              <li>Write 3-4 sentences of feedback — specific, positive, and honest</li>
-              <li>Submit before deadline</li>
+              <li>Write 3 to 4 sentences of feedback — specific and honest</li>
+              <li>Submit before the HR deadline</li>
             </ol>
           </div>
           <div class="detail-block">
             <div class="ai-box">
-              <div class="ai-box-label">🤖 AI shortcut — save 20 mins</div>
-              <div class="ai-box-text">Tell Claude: <strong>"Write a peer review for a colleague named Shubhi. She's proactive in communication, collaborative in cross-functional work, and consistently delivers on her commitments. Include one constructive suggestion about [X — add your own]. Make it warm, specific, and under 100 words."</strong> Edit lightly and paste into Keka.</div>
+              <div class="ai-box-label">AI shortcut — saves 20 minutes</div>
+              <div class="ai-box-text">Tell Claude: <strong>"Write a peer review for a colleague named Shubhi. She is proactive in communication, collaborative in cross-functional work, and consistently delivers. Include one constructive suggestion about [add yours]. Make it warm, specific, and under 100 words."</strong> Edit lightly and paste into Keka.</div>
             </div>
           </div>
           <div class="detail-block">
-            <div class="detail-block-label">Quick links</div>
+            <div class="detail-block-label">All links</div>
             <div class="detail-links-row">
-              <a class="detail-link primary" href="https://mail.google.com/mail/u/0/#inbox/19ce0a56d18f2e11" target="_blank">↗ Open reminder email</a>
-              <a class="detail-link" href="https://flobiz.keka.com" target="_blank">↗ Keka HR portal</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">↗ Open Claude</a>
+              <a class="detail-link primary" href="https://mail.google.com/mail/u/0/#inbox/19ce0a56d18f2e11" target="_blank">Open reminder email</a>
+              <a class="detail-link" href="https://flobiz.keka.com" target="_blank">Keka HR portal</a>
+              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 3. ROHIT MODAL REDESIGN -->
+      <!-- 3 -->
       <div class="action-item priority-high" data-source="slack" data-priority="high" data-id="task-3">
+        <div class="priority-stripe"></div>
         <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)"></div>
-          <div class="priority-dot p-high"></div>
+          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
           <div class="action-body">
             <div class="action-title-row">
-              <div class="action-title">Connect with Rohit re: Modal redesign (postponed from yesterday)</div>
+              <div class="action-title">Connect with Rohit about Modal redesign — postponed from yesterday</div>
               <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
             </div>
             <div class="action-meta">
-              <span class="action-source src-slack">💬 Slack · DM with Rohit Yadav</span>
+              <span class="priority-badge pb-high">High priority</span>
+              <span class="action-source src-slack">Slack · DM with Rohit Yadav</span>
               <span>You confirmed: "let's connect tomorrow"</span>
             </div>
           </div>
@@ -966,43 +1106,44 @@ main { overflow-y: auto; }
             <div class="detail-block-label">Steps to complete</div>
             <ol class="steps-list">
               <li>Open the Figma modal redesign file — review current state before the call</li>
-              <li>Note your key questions or concerns about the redesign direction</li>
-              <li>Ping Rohit on Slack to find a time: "Hey Rohit, I'm free — want to hop on a call to review the modal redesign?"</li>
+              <li>Write down 2 to 3 questions or concerns about the redesign direction</li>
+              <li>Ping Rohit on Slack to find a time to connect</li>
               <li>Share the Figma link in the DM so Rohit can pre-review</li>
-              <li>On the call: align on design direction, note any changes needed</li>
-              <li>Update Figma or drop a comment with agreed decisions post-call</li>
+              <li>On the call: agree on design direction and note any changes needed</li>
+              <li>Drop a Figma comment with the agreed decisions after the call</li>
             </ol>
           </div>
           <div class="detail-block">
             <div class="ai-box">
-              <div class="ai-box-label">🤖 AI shortcut — prep in 5 mins</div>
-              <div class="ai-box-text">Before the call, ask Claude: <strong>"What are the top UX considerations for redesigning a modal in a mobile-first billing app? What edge cases or patterns should I think about before a design review?"</strong> Walk into the call with a focused set of questions — makes the review twice as productive.</div>
+              <div class="ai-box-label">AI shortcut — prep in 5 minutes</div>
+              <div class="ai-box-text">Before the call, ask Claude: <strong>"What are the top UX considerations for redesigning a modal in a mobile billing app? What edge cases should I review before a design review call?"</strong> Walk into the call with focused questions.</div>
             </div>
           </div>
           <div class="detail-block">
-            <div class="detail-block-label">Quick links</div>
+            <div class="detail-block-label">All links</div>
             <div class="detail-links-row">
-              <a class="detail-link primary" href="https://flobiz.slack.com/archives/D09GDC5BAG4" target="_blank">↗ Slack DM · Rohit Yadav</a>
-              <a class="detail-link" href="https://www.figma.com" target="_blank">↗ Figma</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">↗ Open Claude</a>
+              <a class="detail-link primary" href="https://flobiz.slack.com/archives/D09GDC5BAG4" target="_blank">Slack DM — Rohit Yadav</a>
+              <a class="detail-link" href="https://www.figma.com" target="_blank">Figma</a>
+              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 4. FIGMA COMMENT ADARSH -->
+      <!-- 4 -->
       <div class="action-item priority-med" data-source="email" data-priority="med" data-id="task-4">
+        <div class="priority-stripe"></div>
         <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)"></div>
-          <div class="priority-dot p-med"></div>
+          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
           <div class="action-body">
             <div class="action-title-row">
-              <div class="action-title">Review Figma comment from Adarsh in 🔮 Exploration_Web 2026</div>
+              <div class="action-title">Review Figma comment from Adarsh in Exploration Web 2026</div>
               <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
             </div>
             <div class="action-meta">
-              <span class="action-source src-email">📧 Email · Figma notification</span>
-              <span>"move create godown to header" + new comment today</span>
+              <span class="priority-badge pb-med">Medium priority</span>
+              <span class="action-source src-email">Email · Figma notification</span>
+              <span>Comment: "move create godown to header"</span>
             </div>
           </div>
         </div>
@@ -1010,44 +1151,45 @@ main { overflow-y: auto; }
           <div class="detail-block">
             <div class="detail-block-label">Steps to complete</div>
             <ol class="steps-list">
-              <li>Open the Figma notification email to get the direct link to the comment</li>
-              <li>Review the comment: Adarsh suggests moving "Create Godown" to the header</li>
-              <li>Evaluate: does it improve discoverability? Does it fit the header's visual space?</li>
-              <li>Check the second new comment from today — may be related or a new request</li>
-              <li>Reply in Figma with your decision + brief UX rationale (1-2 sentences)</li>
-              <li>If agreed: make the change and resolve the comment. If not: explain and resolve.</li>
+              <li>Open the Figma notification email to get the direct comment link</li>
+              <li>Read the comment: Adarsh wants to move "Create Godown" to the header</li>
+              <li>Evaluate: does it improve discoverability? Does it fit the header space?</li>
+              <li>Check the second new comment from today as well</li>
+              <li>Reply in Figma with your decision and a brief reason (1 to 2 sentences)</li>
+              <li>Resolve the comment — whether you agree or disagree</li>
             </ol>
           </div>
           <div class="detail-block">
             <div class="ai-box">
-              <div class="ai-box-label">🤖 AI shortcut — instant UX rationale</div>
-              <div class="ai-box-text">Ask Claude: <strong>"In a mobile billing app, should 'Create Godown' (warehouse creation) be in the main header navigation or in a secondary/contextual location? What are the UX trade-offs — discoverability vs. header clutter?"</strong> Gets you a clear rationale to reply to Adarsh in 30 seconds.</div>
+              <div class="ai-box-label">AI shortcut — instant UX rationale</div>
+              <div class="ai-box-text">Ask Claude: <strong>"In a mobile billing app, should Create Godown be in the main header or in a secondary location? What are the UX trade-offs between discoverability and header clutter?"</strong> Gets you a reply for Adarsh in 30 seconds.</div>
             </div>
           </div>
           <div class="detail-block">
-            <div class="detail-block-label">Quick links</div>
+            <div class="detail-block-label">All links</div>
             <div class="detail-links-row">
-              <a class="detail-link primary" href="https://mail.google.com/mail/u/0/#inbox/19ce22b0c87243d5" target="_blank">↗ Figma notification email</a>
-              <a class="detail-link" href="https://www.figma.com" target="_blank">↗ Open Figma</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">↗ Open Claude</a>
+              <a class="detail-link primary" href="https://mail.google.com/mail/u/0/#inbox/19ce22b0c87243d5" target="_blank">Figma notification email</a>
+              <a class="detail-link" href="https://www.figma.com" target="_blank">Open Figma</a>
+              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 5. VOTE ON SESSION NAME -->
+      <!-- 5 -->
       <div class="action-item priority-med" data-source="slack" data-priority="med" data-id="task-5">
+        <div class="priority-stripe"></div>
         <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)"></div>
-          <div class="priority-dot p-med"></div>
+          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
           <div class="action-body">
             <div class="action-title-row">
               <div class="action-title">Vote on brainstorming session name in #product-collaborators</div>
               <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
             </div>
             <div class="action-meta">
-              <span class="action-source src-slack">💬 Slack · Priyanka Jain</span>
-              <span>Options: Socho Toh Sahi! · ARPU Manthan · Idea Adda · Udaan Baithak</span>
+              <span class="priority-badge pb-med">Medium priority</span>
+              <span class="action-source src-slack">Slack · Priyanka Jain</span>
+              <span>Options: Socho Toh Sahi · ARPU Manthan · Idea Adda · Udaan Baithak</span>
             </div>
           </div>
         </div>
@@ -1055,41 +1197,41 @@ main { overflow-y: auto; }
           <div class="detail-block">
             <div class="detail-block-label">Steps to complete</div>
             <ol class="steps-list">
-              <li>Open the Slack thread (link below)</li>
-              <li>Read the 4 options: Socho Toh Sahi! / ARPU Manthan / Idea Adda / Udaan Baithak</li>
-              <li>React with the emoji corresponding to your preferred option</li>
+              <li>Open the Slack thread using the link below</li>
+              <li>Read the 4 options: Socho Toh Sahi / ARPU Manthan / Idea Adda / Udaan Baithak</li>
+              <li>React with the emoji that matches your preferred option</li>
               <li>Done — takes under 10 seconds</li>
             </ol>
           </div>
           <div class="detail-block">
             <div class="ai-box">
-              <div class="ai-box-label">🤖 AI shortcut — optional, if you're undecided</div>
-              <div class="ai-box-text">Ask Claude: <strong>"Which of these names best fits an ARPU growth brainstorming session at an Indian fintech? Options: Socho Toh Sahi!, ARPU Manthan, Idea Adda, Udaan Baithak. Consider: memorability, energy, and alignment with business context."</strong></div>
+              <div class="ai-box-label">AI shortcut — if you are undecided</div>
+              <div class="ai-box-text">Ask Claude: <strong>"Which of these names best fits an ARPU growth brainstorming session at an Indian fintech? Options: Socho Toh Sahi, ARPU Manthan, Idea Adda, Udaan Baithak. Consider: energy, memorability, and business alignment."</strong></div>
             </div>
           </div>
           <div class="detail-block">
-            <div class="detail-block-label">Quick links</div>
+            <div class="detail-block-label">All links</div>
             <div class="detail-links-row">
-              <a class="detail-link primary" href="https://flobiz.slack.com/archives/C08UL2Q4MQD/p1773291745325609" target="_blank">↗ Vote in Slack</a>
-              <a class="detail-link" href="https://flobiz.slack.com/archives/C08UL2Q4MQD" target="_blank">↗ #product-collaborators</a>
+              <a class="detail-link primary" href="https://flobiz.slack.com/archives/C08UL2Q4MQD/p1773291745325609" target="_blank">Vote in Slack</a>
+              <a class="detail-link" href="https://flobiz.slack.com/archives/C08UL2Q4MQD" target="_blank">#product-collaborators</a>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 6. AGENDA FOR DESIGN REVIEW -->
+      <!-- 6 -->
       <div class="action-item priority-med" data-source="slack" data-priority="med" data-id="task-6">
+        <div class="priority-stripe"></div>
         <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)"></div>
-          <div class="priority-dot p-med"></div>
+          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
           <div class="action-body">
             <div class="action-title-row">
-              <div class="action-title">Provide agenda for design review meeting (Priyanka asked for it)</div>
+              <div class="action-title">Provide agenda for design review meeting — Priyanka is waiting</div>
               <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
             </div>
             <div class="action-meta">
-              <span class="action-source src-slack">💬 Slack · #product-collaborators · Mar 10</span>
-              <span>Priyanka Jain is waiting on your reply</span>
+              <span class="priority-badge pb-med">Medium priority</span>
+              <span class="action-source src-slack">Slack · #product-collaborators · Mar 10</span>
             </div>
           </div>
         </div>
@@ -1098,40 +1240,41 @@ main { overflow-y: auto; }
             <div class="detail-block-label">Steps to complete</div>
             <ol class="steps-list">
               <li>Open the Slack thread where Priyanka asked for the agenda</li>
-              <li>List 3-4 items: MBBP-1413 design progress, Web Exploration 2026 updates, modal redesign discussion, open Q&A</li>
-              <li>Add rough time splits (e.g. 15 min each)</li>
-              <li>Reply in the thread with the agenda — keep it to 5 bullet points max</li>
+              <li>List 3 to 4 items: MBBP-1413 progress, Web Exploration updates, modal redesign, open Q&A</li>
+              <li>Add rough time splits — for example 15 minutes each</li>
+              <li>Reply in the thread — keep it to 5 bullet points max</li>
             </ol>
           </div>
           <div class="detail-block">
             <div class="ai-box">
-              <div class="ai-box-label">🤖 AI shortcut — draft in 30 seconds</div>
-              <div class="ai-box-text">Tell Claude: <strong>"Write a 5-item agenda for a 60-minute product design review meeting. Topics to cover: MBBP-1413 active design task, Web 2026 Exploration designs, modal redesign with Rohit, Figma comments review (Adarsh's godown header suggestion), open discussion. Format as a short Slack message."</strong></div>
+              <div class="ai-box-label">AI shortcut — draft in 30 seconds</div>
+              <div class="ai-box-text">Tell Claude: <strong>"Write a 5-item agenda for a 60-minute product design review meeting. Topics: MBBP-1413 design task, Web 2026 Exploration designs, modal redesign with Rohit, Figma comments review, open discussion. Format it as a short Slack message."</strong></div>
             </div>
           </div>
           <div class="detail-block">
-            <div class="detail-block-label">Quick links</div>
+            <div class="detail-block-label">All links</div>
             <div class="detail-links-row">
-              <a class="detail-link primary" href="https://flobiz.slack.com/archives/C08UL2Q4MQD/p1773123287932469" target="_blank">↗ Priyanka's message</a>
-              <a class="detail-link" href="https://flobiz.slack.com/archives/C08UL2Q4MQD" target="_blank">↗ #product-collaborators</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">↗ Open Claude</a>
+              <a class="detail-link primary" href="https://flobiz.slack.com/archives/C08UL2Q4MQD/p1773123287932469" target="_blank">Priyanka's message</a>
+              <a class="detail-link" href="https://flobiz.slack.com/archives/C08UL2Q4MQD" target="_blank">#product-collaborators</a>
+              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 7. MBBP-1413 -->
+      <!-- 7 -->
       <div class="action-item priority-med" data-source="jira" data-priority="med" data-id="task-7">
+        <div class="priority-stripe"></div>
         <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)"></div>
-          <div class="priority-dot p-med"></div>
+          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
           <div class="action-body">
             <div class="action-title-row">
-              <div class="action-title">MBBP-1413 — Unblock design and move to review</div>
+              <div class="action-title">MBBP-1413 — Finish design and move to review</div>
               <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
             </div>
             <div class="action-meta">
-              <span class="action-source src-jira">🎯 Jira · MyBillBook Product</span>
+              <span class="priority-badge pb-med">Medium priority</span>
+              <span class="action-source src-jira">Jira · MyBillBook Product</span>
               <span>In Progress · your active design task</span>
             </div>
           </div>
@@ -1140,44 +1283,45 @@ main { overflow-y: auto; }
           <div class="detail-block">
             <div class="detail-block-label">Steps to complete</div>
             <ol class="steps-list">
-              <li>Open the Jira ticket — review acceptance criteria and any engineer comments</li>
-              <li>Open the corresponding Figma file and complete the pending design work</li>
-              <li>Check for edge cases: empty states, error states, loading states</li>
-              <li>Share design link in the Jira ticket comments</li>
-              <li>Tag the relevant engineer or PM for review in the Jira comment</li>
-              <li>Move the ticket status from "In Progress" → "In Review"</li>
+              <li>Open the Jira ticket — review acceptance criteria and comments</li>
+              <li>Open Figma and complete the pending design work</li>
+              <li>Check edge cases: empty states, error states, loading states</li>
+              <li>Paste the Figma link in the Jira ticket comments</li>
+              <li>Tag the engineer or PM for review in the comment</li>
+              <li>Move the ticket status from In Progress to In Review</li>
             </ol>
           </div>
           <div class="detail-block">
             <div class="ai-box">
-              <div class="ai-box-label">🤖 AI shortcut — catch edge cases before review</div>
-              <div class="ai-box-text">Paste the Jira ticket description into Claude and ask: <strong>"I'm designing this feature. What edge cases, error states, and accessibility considerations should I design for before submitting for dev review?"</strong> Catches gaps that would otherwise come back as review comments.</div>
+              <div class="ai-box-label">AI shortcut — catch edge cases before review</div>
+              <div class="ai-box-text">Paste the Jira ticket description into Claude and ask: <strong>"I am designing this feature. What edge cases, error states, and accessibility considerations should I design for before submitting for developer review?"</strong> Catches gaps before they come back as review comments.</div>
             </div>
           </div>
           <div class="detail-block">
-            <div class="detail-block-label">Quick links</div>
+            <div class="detail-block-label">All links</div>
             <div class="detail-links-row">
-              <a class="detail-link primary" href="https://flobiz.atlassian.net/browse/MBBP-1413" target="_blank">↗ MBBP-1413 in Jira</a>
-              <a class="detail-link" href="https://www.figma.com" target="_blank">↗ Figma</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">↗ Open Claude</a>
+              <a class="detail-link primary" href="https://flobiz.atlassian.net/browse/MBBP-1413" target="_blank">MBBP-1413 in Jira</a>
+              <a class="detail-link" href="https://www.figma.com" target="_blank">Figma</a>
+              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 8. BILLBOOK iOS TEST -->
+      <!-- 8 -->
       <div class="action-item priority-med" data-source="email" data-priority="med" data-id="task-8">
+        <div class="priority-stripe"></div>
         <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)"></div>
-          <div class="priority-dot p-med"></div>
+          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
           <div class="action-body">
             <div class="action-title-row">
-              <div class="action-title">BillBook 4.6.9 (169) for iOS — ready to test via Firebase</div>
+              <div class="action-title">BillBook 4.6.9 iOS — ready to test via Firebase App Distribution</div>
               <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
             </div>
             <div class="action-meta">
-              <span class="action-source src-email">📧 Email · Firebase App Distribution</span>
-              <span>Offer settings fix · date overlap bug fix · migrated item search API</span>
+              <span class="priority-badge pb-med">Medium priority</span>
+              <span class="action-source src-email">Email · Firebase App Distribution</span>
+              <span>Offer settings fix · date overlap fix · item search API migration</span>
             </div>
           </div>
         </div>
@@ -1186,43 +1330,44 @@ main { overflow-y: auto; }
             <div class="detail-block-label">Steps to complete</div>
             <ol class="steps-list">
               <li>Open the Firebase email and tap the install link on your iPhone</li>
-              <li>Install BillBook 4.6.9 (build 169) via Firebase App Distribution</li>
-              <li>Test offer settings: create/edit an offer, verify it displays correctly</li>
-              <li>Test date overlap: create invoices with overlapping date ranges, confirm bug is fixed</li>
-              <li>Test migrated item search API: search for items in a new invoice — verify speed and accuracy</li>
-              <li>Log any new bugs in Jira with screen recordings if possible</li>
+              <li>Install BillBook 4.6.9 build 169 from Firebase App Distribution</li>
+              <li>Test offer settings — create and edit an offer, verify display</li>
+              <li>Test date overlap — create invoices with overlapping dates, confirm fix works</li>
+              <li>Test item search — search for items in a new invoice, check speed and results</li>
+              <li>Log any new bugs found in Jira with screen recordings</li>
             </ol>
           </div>
           <div class="detail-block">
             <div class="ai-box">
-              <div class="ai-box-label">🤖 AI shortcut — generate a test checklist</div>
-              <div class="ai-box-text">Tell Claude: <strong>"Generate a QA test checklist for a mobile billing app build with these fixes: (1) offer settings display, (2) date overlap bug in invoices, (3) migrated item search API. Format as a short checklist I can run through in 15 minutes on an iPhone."</strong></div>
+              <div class="ai-box-label">AI shortcut — generate a test checklist</div>
+              <div class="ai-box-text">Tell Claude: <strong>"Generate a QA test checklist for a mobile billing app with these fixes: offer settings display, date overlap bug in invoices, migrated item search API. Format as a short checklist I can run through in 15 minutes on an iPhone."</strong></div>
             </div>
           </div>
           <div class="detail-block">
-            <div class="detail-block-label">Quick links</div>
+            <div class="detail-block-label">All links</div>
             <div class="detail-links-row">
-              <a class="detail-link primary" href="https://mail.google.com/mail/u/0/#inbox/19ce24294350b6c5" target="_blank">↗ Firebase install email</a>
-              <a class="detail-link" href="https://appdistribution.firebase.google.com" target="_blank">↗ Firebase App Distribution</a>
-              <a class="detail-link" href="https://flobiz.atlassian.net" target="_blank">↗ Jira (log bugs)</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">↗ Open Claude</a>
+              <a class="detail-link primary" href="https://mail.google.com/mail/u/0/#inbox/19ce24294350b6c5" target="_blank">Firebase install email</a>
+              <a class="detail-link" href="https://appdistribution.firebase.google.com" target="_blank">Firebase portal</a>
+              <a class="detail-link" href="https://flobiz.atlassian.net" target="_blank">Jira — log bugs</a>
+              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 9. FOLLOW UP ADARSH -->
+      <!-- 9 -->
       <div class="action-item priority-low" data-source="slack" data-priority="low" data-id="task-9">
+        <div class="priority-stripe"></div>
         <div class="action-top">
-          <div class="action-check" onclick="toggleDone(this)"></div>
-          <div class="priority-dot p-low"></div>
+          <div class="action-check" onclick="toggleDone(this)" role="checkbox" tabindex="0" aria-label="Mark as done"></div>
           <div class="action-body">
             <div class="action-title-row">
-              <div class="action-title">Follow up with Adarsh — invoice drafts & multiple tabs feature</div>
+              <div class="action-title">Follow up with Adarsh — invoice drafts and multiple tabs feature</div>
               <button class="toggle-detail-btn" onclick="toggleDetail(this)">Details ▸</button>
             </div>
             <div class="action-meta">
-              <span class="action-source src-slack">💬 Slack · Adarsh Pankaj</span>
+              <span class="priority-badge pb-low">Low priority</span>
+              <span class="action-source src-slack">Slack · Adarsh Pankaj</span>
               <span>"Bro lets connect whenever free" — user feedback on multi-tab invoicing</span>
             </div>
           </div>
@@ -1231,25 +1376,25 @@ main { overflow-y: auto; }
           <div class="detail-block">
             <div class="detail-block-label">Steps to complete</div>
             <ol class="steps-list">
-              <li>Ping Adarsh on Slack: "Hey, free for a quick call today or tomorrow?"</li>
-              <li>Before the call — review the multi-tab constraint: drafts are lost when switching tabs (technical limitation)</li>
-              <li>On the call: listen to user feedback on invoice drafts and multi-tab use case</li>
+              <li>Ping Adarsh on Slack — ask when he is free for a quick call</li>
+              <li>Before the call: review the multi-tab constraint — drafts are lost when switching tabs</li>
+              <li>On the call: listen to feedback on invoice drafts and multi-tab use case</li>
               <li>Note the key pain points and user workarounds</li>
-              <li>After the call: drop a Jira ticket or Figma note with insights for future planning</li>
+              <li>After the call: add a Jira ticket or Figma note with insights for future planning</li>
             </ol>
           </div>
           <div class="detail-block">
             <div class="ai-box">
-              <div class="ai-box-label">🤖 AI shortcut — prep with patterns before the call</div>
-              <div class="ai-box-text">Ask Claude: <strong>"What are common UX patterns for multi-tab document creation in mobile apps? How do other billing or invoicing apps handle draft persistence when users switch between documents? I'm preparing for a user call about this."</strong> Walk in with solutions, not just problems.</div>
+              <div class="ai-box-label">AI shortcut — prep with patterns before the call</div>
+              <div class="ai-box-text">Ask Claude: <strong>"What are common UX patterns for multi-tab document creation in mobile apps? How do billing apps handle draft persistence when users switch between documents? I am preparing for a user feedback call."</strong></div>
             </div>
           </div>
           <div class="detail-block">
-            <div class="detail-block-label">Quick links</div>
+            <div class="detail-block-label">All links</div>
             <div class="detail-links-row">
-              <a class="detail-link primary" href="https://flobiz.slack.com" target="_blank">↗ Slack · Message Adarsh</a>
-              <a class="detail-link" href="https://claude.ai" target="_blank">↗ Open Claude</a>
-              <a class="detail-link" href="https://flobiz.atlassian.net" target="_blank">↗ Jira (log insights)</a>
+              <a class="detail-link primary" href="https://flobiz.slack.com" target="_blank">Slack — message Adarsh</a>
+              <a class="detail-link" href="https://claude.ai" target="_blank">Open Claude</a>
+              <a class="detail-link" href="https://flobiz.atlassian.net" target="_blank">Jira — log insights</a>
             </div>
           </div>
         </div>
@@ -1262,13 +1407,13 @@ main { overflow-y: auto; }
   <div class="section" id="meetings">
     <div class="section-header">
       <div class="section-title">Today's meetings</div>
-      <div class="section-count">2 confirmed · Thu Mar 12</div>
+      <span class="section-count">2 confirmed · Thu Mar 12</span>
     </div>
     <div class="meeting-list">
       <div class="meeting-card">
         <div class="meeting-time">11:00 AM</div>
         <div class="meeting-info">
-          <div class="meeting-title">🧋 P&D Standup</div>
+          <div class="meeting-title">P&D Standup</div>
           <div class="meeting-meta">30 min · Organizer: Nishit Bhatt · Nishit, Shubhi, Soubia, Sumit, Ankit, Priyanka, Adarsh, Nikhil + you</div>
         </div>
         <span class="meeting-badge badge-done">Done</span>
@@ -1276,7 +1421,7 @@ main { overflow-y: auto; }
       <div class="meeting-card">
         <div class="meeting-time">5:00 PM</div>
         <div class="meeting-info">
-          <div class="meeting-title">🧋 Product Gupshup</div>
+          <div class="meeting-title">Product Gupshup</div>
           <div class="meeting-meta">60 min · Organizer: Priyanka Jain · Full product team (12 attendees) · Recurring</div>
           <div class="meeting-countdown" id="gupshupCountdown"></div>
         </div>
@@ -1289,7 +1434,7 @@ main { overflow-y: auto; }
   <div class="section" id="moms">
     <div class="section-header">
       <div class="section-title">Meeting MOMs</div>
-      <div class="section-count">3 sessions today · tap to expand</div>
+      <span class="section-count">3 sessions today · tap to expand</span>
     </div>
     <div class="mom-list">
 
@@ -1297,18 +1442,18 @@ main { overflow-y: auto; }
         <div class="mom-head">
           <div>
             <div class="mom-title-text">Flobiz POS Billing — Customer Feature Review</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:2px">Mar 12, 10:01 AM · Siddhartha Kumar</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:3px">Mar 12 · 10:01 AM · Siddhartha Kumar</div>
           </div>
-          <span class="chevron">▼</span>
+          <span class="chevron">&#9660;</span>
         </div>
         <div class="mom-body-text">
           <strong>Key customer requests logged:</strong><br><br>
-          • GST visibility toggle — hide/show GST on invoices (MPOS customer-facing display)<br>
-          • Multi-invoice creation — view other invoices while creating new ones (technical constraint: drafts lost when switching tabs)<br>
-          • Thermal bill customization before printing — feature ready, rolling out to select customers, full rollout in 10 days–1 month<br>
-          • Local language item search — AI translation proposed as solution, bills stay in English<br>
-          • Easier stock management — demonstrated bulk GST editing & stock via purchase invoice<br><br>
-          <strong>Next steps:</strong> Dev team to review GST toggle + local language search. Follow-up call scheduled for My Bill Book improvements.
+          GST visibility toggle — hide or show GST on invoices (MPOS customer-facing display)<br><br>
+          Multi-invoice creation — view other invoices while creating new ones. Technical constraint: drafts are lost when switching tabs.<br><br>
+          Thermal bill customization before printing — feature ready, rolling out to select customers, full rollout in 10 days to 1 month.<br><br>
+          Local language item search — AI translation proposed as solution, bills stay in English.<br><br>
+          Easier stock management — demonstrated bulk GST editing and stock via purchase invoice.<br><br>
+          <strong>Next steps:</strong> Dev team to review GST toggle and local language search. Follow-up call scheduled for My Bill Book improvements.
         </div>
       </div>
 
@@ -1316,26 +1461,26 @@ main { overflow-y: auto; }
         <div class="mom-head">
           <div>
             <div class="mom-title-text">Invoice Feature Details — Photography Business Billing</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:2px">Mar 12, 9:46 AM · Siddhartha Kumar</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:3px">Mar 12 · 9:46 AM · Siddhartha Kumar</div>
           </div>
-          <span class="chevron">▼</span>
+          <span class="chevron">&#9660;</span>
         </div>
         <div class="mom-body-text">
-          No summary generated yet. Notes captured in Granola — open Granola to view transcript.
+          No summary generated yet. Notes captured in Granola — open Granola to view the transcript.
         </div>
       </div>
 
       <div class="mom-card" onclick="toggleMOM(this)">
         <div class="mom-head">
           <div>
-            <div class="mom-title-text">🧋 Product Gupshup — Pre-read</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:2px">Mar 12, 5:00 PM · Upcoming</div>
+            <div class="mom-title-text">Product Gupshup — Pre-read</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:3px">Mar 12 · 5:00 PM · Upcoming</div>
           </div>
-          <span class="chevron">▼</span>
+          <span class="chevron">&#9660;</span>
         </div>
         <div class="mom-body-text">
-          Meeting is at 5 PM today. MOM will be auto-captured in Granola post-meeting.<br><br>
-          <strong>Suggested prep:</strong> Based on Slack activity, likely to discuss Cursor Automations, the ARPU brainstorming session name vote, and ongoing AI feature work (Purchase OCR).
+          Meeting is at 5 PM today. MOM will be auto-captured in Granola after the meeting.<br><br>
+          <strong>Suggested prep:</strong> Based on Slack activity, likely to discuss Cursor Automations, the ARPU brainstorming session name vote, and ongoing AI feature work on Purchase OCR.
         </div>
       </div>
 
@@ -1346,38 +1491,38 @@ main { overflow-y: auto; }
   <div class="section" id="jira">
     <div class="section-header">
       <div class="section-title">Jira tasks</div>
-      <div class="section-count">5 open · MyBillBook Product</div>
+      <span class="section-count">5 open · MyBillBook Product</span>
     </div>
     <div class="jira-list">
       <div class="jira-row">
         <div class="jira-key">MBBP-1413</div>
-        <div class="jira-title">Design (active subtask)</div>
+        <div class="jira-title">Design — active subtask</div>
         <span class="jira-status status-progress">In Progress</span>
-        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1413" target="_blank" style="font-size:10px;padding:2px 8px">↗</a>
+        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1413" target="_blank" style="padding:4px 10px;font-size:12px">Open</a>
       </div>
       <div class="jira-row">
         <div class="jira-key">MBBP-1264</div>
-        <div class="jira-title">Scan & record bills using Mira AI (Purchase OCR) — iOS DQA</div>
+        <div class="jira-title">Scan and record bills using Mira AI — Purchase OCR iOS DQA</div>
         <span class="jira-status status-todo">To Do</span>
-        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1264" target="_blank" style="font-size:10px;padding:2px 8px">↗</a>
+        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1264" target="_blank" style="padding:4px 10px;font-size:12px">Open</a>
       </div>
       <div class="jira-row">
         <div class="jira-key">MBBP-1407</div>
-        <div class="jira-title">Design (subtask)</div>
+        <div class="jira-title">Design — subtask</div>
         <span class="jira-status status-todo">To Do</span>
-        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1407" target="_blank" style="font-size:10px;padding:2px 8px">↗</a>
+        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1407" target="_blank" style="padding:4px 10px;font-size:12px">Open</a>
       </div>
       <div class="jira-row">
         <div class="jira-key">MBBP-1376</div>
         <div class="jira-title">Barcode Settings — DQA</div>
         <span class="jira-status status-todo">To Do</span>
-        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1376" target="_blank" style="font-size:10px;padding:2px 8px">↗</a>
+        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1376" target="_blank" style="padding:4px 10px;font-size:12px">Open</a>
       </div>
       <div class="jira-row">
         <div class="jira-key">MBBP-1327</div>
-        <div class="jira-title">Purchase OCR learning/mapping — DQA</div>
+        <div class="jira-title">Purchase OCR learning and mapping — DQA</div>
         <span class="jira-status status-todo">To Do</span>
-        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1327" target="_blank" style="font-size:10px;padding:2px 8px">↗</a>
+        <a class="detail-link" href="https://flobiz.atlassian.net/browse/MBBP-1327" target="_blank" style="padding:4px 10px;font-size:12px">Open</a>
       </div>
     </div>
   </div>
@@ -1385,50 +1530,50 @@ main { overflow-y: auto; }
   <!-- AI FEED -->
   <div class="section" id="ai-feed">
     <div class="section-header">
-      <div class="section-title">AI & design feed</div>
-      <div class="section-count">Curated from Slack · #aiverse-at-flobiz</div>
+      <div class="section-title">AI and design feed</div>
+      <span class="section-count">Curated from #aiverse-at-flobiz</span>
     </div>
 
-    <div class="highlight" style="border-color:rgba(123,206,200,0.2);background:linear-gradient(135deg, rgba(123,206,200,0.05), rgba(168,123,232,0.03))">
-      <div class="highlight-label" style="color:var(--accent2)">💡 Why this matters for you as a product designer learning AI</div>
-      <div class="highlight-text">The team is actively discussing Cursor Automations (Slack → auto PR generation), MCP value debates, AI cost reduction strategies, and the Sequoia "services as software" thesis. The latent.space "Reviews are dead" piece is particularly relevant — it reframes how AI should handle user feedback in product cycles. Computer use is improving fast.</div>
+    <div class="highlight" style="border-color:rgba(123,206,200,0.22);background:linear-gradient(135deg, rgba(123,206,200,0.05), rgba(176,138,232,0.03))">
+      <div class="highlight-label" style="color:var(--accent2)">Why this matters for you as a product designer learning AI</div>
+      <div class="highlight-text">The team is discussing Cursor Automations (Slack triggers auto PR generation), MCP value debates, AI cost reduction strategies, and the Sequoia "services as software" thesis. The latent.space "Reviews are dead" piece is particularly relevant — it reframes how AI should handle user feedback in product cycles.</div>
     </div>
 
     <div class="ai-feed">
       <div class="ai-item">
         <div class="ai-source">Gagan Lohia · #aiverse-at-flobiz · 11:09 AM today</div>
         <div class="ai-text">Latest on OpenClaw — shared on X. Possibly related to AI agent capabilities worth tracking.</div>
-        <a class="ai-link" href="https://x.com/openclaw/status/2031965133405073823" target="_blank">↗ View tweet</a>
+        <a class="ai-link" href="https://x.com/openclaw/status/2031965133405073823" target="_blank">View on X (Twitter)</a>
       </div>
       <div class="ai-item">
         <div class="ai-source">Nishit Bhatt · #aiverse-at-flobiz · 10:12 AM today</div>
-        <div class="ai-text">YouTube video shared — AI/product deep dive, likely on new model capabilities or workflow automation.</div>
-        <a class="ai-link" href="https://www.youtube.com/watch?v=i1tZN41VKcE" target="_blank">↗ Watch on YouTube</a>
+        <div class="ai-text">YouTube video shared — AI and product deep dive on new model capabilities or workflow automation.</div>
+        <a class="ai-link" href="https://www.youtube.com/watch?v=i1tZN41VKcE" target="_blank">Watch on YouTube</a>
       </div>
       <div class="ai-item">
         <div class="ai-source">Nishit Bhatt · #aiverse-at-flobiz · 10:11 AM today</div>
         <div class="ai-text">latent.space — "Reviews are dead" — how AI is reshaping feedback and product review loops. Recommended reading for product designers.</div>
-        <a class="ai-link" href="https://www.latent.space/p/reviews-dead" target="_blank">↗ Read article</a>
+        <a class="ai-link" href="https://www.latent.space/p/reviews-dead" target="_blank">Read the article</a>
       </div>
       <div class="ai-item">
         <div class="ai-source">Rakesh Yadav · #aiverse-at-flobiz · 9:48 AM today</div>
-        <div class="ai-text">Skeptical take on MCP — "Is there any true benefit of MCP at all?" — thread worth reading before forming opinions on MCP integration.</div>
-        <a class="ai-link" href="https://x.com/dzhng/status/2029518820872945889" target="_blank">↗ View thread</a>
+        <div class="ai-text">Skeptical take on MCP — "Is there any true benefit of MCP at all?" — worth reading before forming opinions on MCP integration.</div>
+        <a class="ai-link" href="https://x.com/dzhng/status/2029518820872945889" target="_blank">View thread on X</a>
       </div>
       <div class="ai-item">
         <div class="ai-source">Vaibhav Shrivastav · #aiverse-at-flobiz · Mar 6</div>
-        <div class="ai-text">Cursor Automations demo: Slack trigger → AI analyses issue + image → generates PR → you just review. "Wake up, review code, go back to sleep" workflow. Pros: fully customizable triggers. Cons: only high-token models, on-demand pricing.</div>
-        <a class="ai-link" href="https://flobiz.slack.com/archives/C08NQUX9CEQ" target="_blank">↗ Read full thread in Slack</a>
+        <div class="ai-text">Cursor Automations demo: Slack trigger, AI analyses issue and image, generates PR, you just review. "Wake up, review code, go back to sleep" workflow. Pros: fully customizable triggers. Cons: only high-token models, on-demand pricing.</div>
+        <a class="ai-link" href="https://flobiz.slack.com/archives/C08NQUX9CEQ" target="_blank">Read full thread in Slack</a>
       </div>
       <div class="ai-item">
         <div class="ai-source">Priyanka Jain · #aiverse-at-flobiz · Mar 10</div>
         <div class="ai-text">LinkedIn: "I cut our AI costs by 80% — an embarrassingly simple fix" — practical cost-reduction strategies for AI-powered products.</div>
-        <a class="ai-link" href="https://www.linkedin.com/pulse/i-cut-our-ai-costs-80-fix-embarrassingly-simple-once-what-gaurav-glhkc" target="_blank">↗ Read on LinkedIn</a>
+        <a class="ai-link" href="https://www.linkedin.com/pulse/i-cut-our-ai-costs-80-fix-embarrassingly-simple-once-what-gaurav-glhkc" target="_blank">Read on LinkedIn</a>
       </div>
       <div class="ai-item">
         <div class="ai-source">Punit Goswami · #aiverse-at-flobiz · Mar 8</div>
-        <div class="ai-text">Sequoia Capital: "Services: the new software" — essential strategic read on how AI agents are transforming SaaS into services businesses. Directly relevant to FloBiz's direction.</div>
-        <a class="ai-link" href="https://sequoiacap.com/article/services-the-new-software/" target="_blank">↗ Read on Sequoia</a>
+        <div class="ai-text">Sequoia Capital: "Services: the new software" — essential read on how AI agents are transforming SaaS into services businesses. Directly relevant to FloBiz's direction.</div>
+        <a class="ai-link" href="https://sequoiacap.com/article/services-the-new-software/" target="_blank">Read on Sequoia</a>
       </div>
     </div>
   </div>
@@ -1437,202 +1582,207 @@ main { overflow-y: auto; }
 </div>
 
 <script>
-// ─── CLOCK & GREETING ───────────────────────────────────────────────
+// ── CLOCK & GREETING ────────────────────────────────────────────────
 function updateClock() {
   const now = new Date();
-  const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+  const h = now.getHours(), m = now.getMinutes();
   const ampm = h >= 12 ? 'PM' : 'AM';
   const hh = h % 12 || 12;
   const mm = String(m).padStart(2, '0');
   document.getElementById('liveClock').textContent = `${hh}:${mm} ${ampm}`;
-
   const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
   const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   document.getElementById('liveDay').textContent = now.getDate();
   document.getElementById('liveDate').textContent = `${days[now.getDay()]} · ${months[now.getMonth()]} ${now.getFullYear()}`;
-
   let greeting = 'Good morning';
   if (h >= 12 && h < 17) greeting = 'Good afternoon';
   else if (h >= 17) greeting = 'Good evening';
-  document.getElementById('greeting').innerHTML = `${greeting},<br><em>Siddhartha.</em>`;
-
-  // Meeting countdown for Product Gupshup at 5 PM
-  const gupshup = new Date(now);
-  gupshup.setHours(17, 0, 0, 0);
+  document.getElementById('greeting').innerHTML = `${greeting}, <span class="name">Siddhartha.</span>`;
+  // Meeting countdown
+  const gupshup = new Date(now); gupshup.setHours(17, 0, 0, 0);
   const diff = gupshup - now;
   const cdEl = document.getElementById('gupshupCountdown');
   if (cdEl) {
     if (diff > 0) {
-      const dh = Math.floor(diff / 3600000);
-      const dm = Math.floor((diff % 3600000) / 60000);
-      cdEl.textContent = dh > 0 ? `in ${dh}h ${dm}m` : `in ${dm}m`;
+      const dh = Math.floor(diff / 3600000), dm = Math.floor((diff % 3600000) / 60000);
+      cdEl.textContent = dh > 0 ? `Starts in ${dh}h ${dm}m` : `Starts in ${dm}m`;
     } else if (diff > -3600000) {
-      cdEl.textContent = '🔴 Live now';
-    } else {
-      cdEl.textContent = '';
-    }
+      cdEl.textContent = 'Live right now';
+    } else { cdEl.textContent = ''; }
   }
 }
 setInterval(updateClock, 1000);
 updateClock();
 
-// ─── REFRESH & LAST UPDATED ─────────────────────────────────────────
+// ── REFRESH ─────────────────────────────────────────────────────────
 const REFRESH_KEY = 'sk_dashboard_refresh';
 const REFRESH_DATE_KEY = 'sk_dashboard_refresh_date';
 
 function refreshDashboard() {
-  const now = new Date().toISOString();
-  localStorage.setItem(REFRESH_KEY, now);
+  localStorage.setItem(REFRESH_KEY, new Date().toISOString());
   localStorage.setItem(REFRESH_DATE_KEY, new Date().toDateString());
   location.reload();
 }
-
 function updateLastRefreshedDisplay() {
   const stored = localStorage.getItem(REFRESH_KEY);
   const el = document.getElementById('lastUpdated');
-  if (!stored) {
-    const now = new Date().toISOString();
-    localStorage.setItem(REFRESH_KEY, now);
-    localStorage.setItem(REFRESH_DATE_KEY, new Date().toDateString());
-    el.textContent = 'Updated just now';
-    return;
-  }
-  const d = new Date(stored);
-  const now = new Date();
+  if (!stored) { localStorage.setItem(REFRESH_KEY, new Date().toISOString()); el.textContent = 'Updated just now'; return; }
+  const d = new Date(stored), now = new Date();
   const diffMin = Math.floor((now - d) / 60000);
   if (diffMin < 1) el.textContent = 'Updated just now';
   else if (diffMin < 60) el.textContent = `Updated ${diffMin}m ago`;
-  else {
-    const h = d.getHours() % 12 || 12;
-    const m = String(d.getMinutes()).padStart(2,'0');
-    const ap = d.getHours() >= 12 ? 'PM' : 'AM';
-    el.textContent = `Updated at ${h}:${m} ${ap}`;
-  }
+  else { const h = d.getHours()%12||12, m = String(d.getMinutes()).padStart(2,'0'), ap = d.getHours()>=12?'PM':'AM'; el.textContent = `Updated at ${h}:${m} ${ap}`; }
 }
 updateLastRefreshedDisplay();
 setInterval(updateLastRefreshedDisplay, 60000);
 
-// ─── 11 AM AUTO-REFRESH BANNER ──────────────────────────────────────
+// ── 11AM BANNER ─────────────────────────────────────────────────────
 function check11amBanner() {
   const now = new Date();
-  const h = now.getHours(), m = now.getMinutes();
   const todayStr = now.toDateString();
   const lastDate = localStorage.getItem(REFRESH_DATE_KEY);
   const dismissed = localStorage.getItem('sk_banner_dismissed_' + todayStr);
-
-  if (h >= 11 && lastDate !== todayStr && !dismissed) {
+  if (now.getHours() >= 11 && lastDate !== todayStr && !dismissed) {
     document.getElementById('refreshBanner').classList.add('visible');
   }
 }
-
 function dismissBanner() {
-  const todayStr = new Date().toDateString();
-  localStorage.setItem('sk_banner_dismissed_' + todayStr, '1');
+  localStorage.setItem('sk_banner_dismissed_' + new Date().toDateString(), '1');
   document.getElementById('refreshBanner').classList.remove('visible');
 }
-
 check11amBanner();
 setInterval(check11amBanner, 60000);
 
-// ─── PROGRESS BAR ───────────────────────────────────────────────────
+// ── PROGRESS BAR ─────────────────────────────────────────────────────
 function updateProgress() {
-  const items = document.querySelectorAll('.action-item:not([style*="display: none"])');
-  const visible = Array.from(document.querySelectorAll('.action-item')).filter(i => i.style.display !== 'none');
-  const total = visible.length || document.querySelectorAll('.action-item').length;
+  const all = document.querySelectorAll('.action-item');
+  const visible = Array.from(all).filter(i => i.style.display !== 'none');
+  const total = visible.length || all.length;
   const done = document.querySelectorAll('.action-item.done').length;
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressLabel').textContent = `${done} of ${total} done`;
   document.getElementById('progressPct').textContent = pct + '%';
-
-  // Update badge
   const pending = total - done;
   document.getElementById('pendingCount').textContent = pending;
   document.getElementById('tagActionables').textContent = `${pending} actionable${pending !== 1 ? 's' : ''}`;
 }
 
-// ─── CHECKBOX WITH PERSISTENCE ──────────────────────────────────────
+// ── CHECKBOXES WITH PERSISTENCE ─────────────────────────────────────
 const DONE_KEY = 'sk_done_tasks';
-
 function loadDoneState() {
   const saved = JSON.parse(localStorage.getItem(DONE_KEY) || '[]');
-  saved.forEach(id => {
-    const item = document.querySelector(`[data-id="${id}"]`);
-    if (item) item.classList.add('done');
-  });
+  saved.forEach(id => { const item = document.querySelector(`[data-id="${id}"]`); if (item) item.classList.add('done'); });
   updateProgress();
 }
-
 function saveDoneState() {
-  const doneIds = Array.from(document.querySelectorAll('.action-item.done'))
-    .map(el => el.dataset.id).filter(Boolean);
-  localStorage.setItem(DONE_KEY, JSON.stringify(doneIds));
+  const ids = Array.from(document.querySelectorAll('.action-item.done')).map(el => el.dataset.id).filter(Boolean);
+  localStorage.setItem(DONE_KEY, JSON.stringify(ids));
 }
-
 function toggleDone(checkEl) {
-  const item = checkEl.closest('.action-item');
-  item.classList.toggle('done');
-  saveDoneState();
-  updateProgress();
+  checkEl.closest('.action-item').classList.toggle('done');
+  saveDoneState(); updateProgress();
 }
-
 loadDoneState();
 
-// ─── FILTER ─────────────────────────────────────────────────────────
+// ── FILTER ───────────────────────────────────────────────────────────
 function filterActions(type, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const items = document.querySelectorAll('.action-item');
-  items.forEach(item => {
-    const src = item.dataset.source;
-    const pri = item.dataset.priority;
+  document.querySelectorAll('.action-item').forEach(item => {
     let show = true;
-    if (type === 'email' && src !== 'email') show = false;
-    if (type === 'slack' && src !== 'slack') show = false;
-    if (type === 'jira' && src !== 'jira') show = false;
-    if (type === 'high' && pri !== 'high') show = false;
+    if (type === 'email' && item.dataset.source !== 'email') show = false;
+    if (type === 'slack' && item.dataset.source !== 'slack') show = false;
+    if (type === 'jira' && item.dataset.source !== 'jira') show = false;
+    if (type === 'high' && item.dataset.priority !== 'high') show = false;
     item.style.display = show ? '' : 'none';
   });
   updateProgress();
 }
 
-// ─── EXPAND / COLLAPSE TASK DETAILS ─────────────────────────────────
+// ── EXPAND/COLLAPSE DETAILS ──────────────────────────────────────────
 function toggleDetail(btn) {
   const item = btn.closest('.action-item');
   const panel = item.querySelector('.detail-panel');
   const isOpen = panel.classList.contains('open');
   panel.classList.toggle('open', !isOpen);
   btn.classList.toggle('open', !isOpen);
-  btn.textContent = isOpen ? 'Details ▸' : 'Details ▾';
+  btn.textContent = isOpen ? 'Details \u25B8' : 'Details \u25BE';
 }
 
-// ─── MOM TOGGLE ─────────────────────────────────────────────────────
+// ── MOM TOGGLE ───────────────────────────────────────────────────────
 function toggleMOM(card) {
   card.classList.toggle('expanded');
-  const body = card.querySelector('.mom-body-text');
-  body.classList.toggle('open');
+  card.querySelector('.mom-body-text').classList.toggle('open');
 }
 
-// ─── ANIMATIONS ─────────────────────────────────────────────────────
+// ── ACCESSIBILITY ────────────────────────────────────────────────────
+let fontSize = parseInt(localStorage.getItem('sk_font_size') || '16');
+let rulerEnabled = false;
+let wideSpacing = localStorage.getItem('sk_wide_spacing') === '1';
+
+function applyFontSize() {
+  document.documentElement.style.setProperty('--base-font-size', fontSize + 'px');
+  document.getElementById('fontSizeDisplay').textContent = fontSize;
+  localStorage.setItem('sk_font_size', fontSize);
+}
+function changeFontSize(delta) {
+  fontSize = Math.max(14, Math.min(26, fontSize + delta));
+  applyFontSize();
+}
+applyFontSize();
+
+const ruler = document.getElementById('readingRuler');
+document.addEventListener('mousemove', (e) => {
+  if (rulerEnabled) ruler.style.top = (e.clientY - 26) + 'px';
+});
+function toggleRuler() {
+  rulerEnabled = !rulerEnabled;
+  ruler.style.display = rulerEnabled ? 'block' : 'none';
+  document.getElementById('rulerBtn').classList.toggle('active', rulerEnabled);
+}
+
+function applySpacing() {
+  if (wideSpacing) {
+    document.documentElement.style.setProperty('--line-height', '2.4');
+    document.documentElement.style.setProperty('--letter-spacing', '0.07em');
+    document.documentElement.style.setProperty('--word-spacing', '0.16em');
+  } else {
+    document.documentElement.style.setProperty('--line-height', '2.0');
+    document.documentElement.style.setProperty('--letter-spacing', '0.03em');
+    document.documentElement.style.setProperty('--word-spacing', '0.08em');
+  }
+  document.getElementById('spacingBtn').classList.toggle('active', wideSpacing);
+}
+function toggleSpacing() {
+  wideSpacing = !wideSpacing;
+  localStorage.setItem('sk_wide_spacing', wideSpacing ? '1' : '0');
+  applySpacing();
+}
+applySpacing();
+
+// ── ANIMATIONS ───────────────────────────────────────────────────────
 document.querySelectorAll('.action-item').forEach((el, i) => {
   el.style.animationDelay = (i * 0.04) + 's';
   el.style.animation = 'fadeUp 0.3s ease both';
 });
 
-// ─── ACTIVE NAV ON SCROLL ───────────────────────────────────────────
+// ── ACTIVE NAV ON SCROLL ─────────────────────────────────────────────
 const sections = document.querySelectorAll('[id]');
 const navLinks = document.querySelectorAll('.nav-item[href^="#"]');
 window.addEventListener('scroll', () => {
   let current = '';
-  sections.forEach(sec => {
-    if (window.scrollY >= sec.offsetTop - 80) current = sec.id;
-  });
+  sections.forEach(sec => { if (window.scrollY >= sec.offsetTop - 80) current = sec.id; });
   navLinks.forEach(link => {
     link.classList.remove('active');
     if (link.getAttribute('href') === '#' + current) link.classList.add('active');
   });
 }, { passive: true });
+
+// ── KEYBOARD: ENTER ON CHECKBOX ─────────────────────────────────────
+document.querySelectorAll('.action-check').forEach(el => {
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleDone(el); } });
+});
 </script>
 
 </body>
